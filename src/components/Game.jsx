@@ -37,120 +37,166 @@ const Game = () => {
 
 
     const CheckBox = (boxID,cellID) => {
+        if (boxID == 4) {
+            setNxtPlayBox(cellID);
+        }
         if (boxID == 0) {
             if (cellID == 5) {
                 setNxtPlayBox(1);
             }
-            if (cellID == 7) {
+            else if (cellID == 7) {
                 setNxtPlayBox(3);
             }
-            if (cellID == 8) {
+            else if (cellID == 8) {
                 setNxtPlayBox(4);
+            }
+            else if (cellID == 4) {
+                setNxtPlayBox(boxID);
+            } else {
+                setNxtPlayBox(null);
             }
         }
         if (boxID == 1) {
             if (cellID == 5) {
                 setNxtPlayBox(2);
             }
-            if (cellID == 7) {
+            else if (cellID == 7) {
                 setNxtPlayBox(4);
             }
-            if (cellID == 8) {
+            else if (cellID == 8) {
                 setNxtPlayBox(5);
             }
-            if (cellID == 3) {
+            else if (cellID == 3) {
                 setNxtPlayBox(0);
             }
-            if (cellID == 6) {
+            else if (cellID == 6) {
                 setNxtPlayBox(3);
+            }
+            else if (cellID == 4) {
+                setNxtPlayBox(boxID);
+            } else {
+                setNxtPlayBox(null);
             }
         }
         if (boxID == 2) {
             if (cellID == 3) {
                 setNxtPlayBox(1);
             }
-            if (cellID == 6) {
+            else if (cellID == 6) {
                 setNxtPlayBox(4);
             }
-            if (cellID == 7) {
+            else if (cellID == 7) {
                 setNxtPlayBox(5);
+            }
+            else if (cellID == 4) {
+                setNxtPlayBox(boxID);
+            }
+            else {
+                setNxtPlayBox(null);
             }
         }
         if (boxID == 3) {
             if (cellID == 1) {
                 setNxtPlayBox(0);
             }
-            if (cellID == 2) {
+            else if (cellID == 2) {
                 setNxtPlayBox(1);
             }
-            if (cellID == 5) {
+            else if (cellID == 5) {
                 setNxtPlayBox(4);
             }
-            if (cellID == 8) {
+            else if (cellID == 8) {
                 setNxtPlayBox(7);
             }
-            if (cellID == 7) {
+            else if (cellID == 7) {
                 setNxtPlayBox(6);
+            }
+            else if (cellID == 4) {
+                setNxtPlayBox(boxID);
+            }
+            else {
+                setNxtPlayBox(null);
             }
         }
         if (boxID == 5) {
             if (cellID == 1) {
                 setNxtPlayBox(2);
             }
-            if (cellID == 0) {
+            else if (cellID == 0) {
                 setNxtPlayBox(1);
             }
-            if (cellID == 3) {
+            else if (cellID == 3) {
                 setNxtPlayBox(4);
             }
-            if (cellID == 6) {
+            else if (cellID == 6) {
                 setNxtPlayBox(7);
             }
-            if (cellID == 7) {
+            else if (cellID == 7) {
                 setNxtPlayBox(8);
+            }
+            else if (cellID == 4) {
+                setNxtPlayBox(boxID);
+            }
+            else {
+                setNxtPlayBox(null);
             }
         }
         if (boxID == 6) {
             if (cellID == 1) {
                 setNxtPlayBox(3);
             }
-            if (cellID == 2) {
+            else if (cellID == 2) {
                 setNxtPlayBox(4);
             }
-            if (cellID == 5) {
+            else if (cellID == 5) {
                 setNxtPlayBox(7);
+            }
+            else if (cellID == 4) {
+                setNxtPlayBox(boxID);
+            }
+            else {
+                setNxtPlayBox(null);
             }
         }
         if (boxID == 7) {
             if (cellID == 3) {
                 setNxtPlayBox(6);
             }
-            if (cellID == 0) {
+            else if (cellID == 0) {
                 setNxtPlayBox(3);
             }
-            if (cellID == 1) {
+            else if (cellID == 1) {
                 setNxtPlayBox(4);
             }
-            if (cellID == 2) {
+            else if (cellID == 2) {
                 setNxtPlayBox(5);
             }
-            if (cellID == 5) {
+            else if (cellID == 5) {
                 setNxtPlayBox(8);
+            }
+            else if (cellID == 4) {
+                setNxtPlayBox(boxID);
+            }
+            else {
+                setNxtPlayBox(null);
             }
         }
         if (boxID == 8) {
             if (cellID == 3) {
                 setNxtPlayBox(7);
             }
-            if (cellID == 0) {
+            else if (cellID == 0) {
                 setNxtPlayBox(4);
             }
-            if (cellID == 1) {
+            else if (cellID == 1) {
                 setNxtPlayBox(5);
             }
-        }
-        if (boxID == 4) {
-            setNxtPlayBox(cellID);
+            else if (cellID == 4) {
+                setNxtPlayBox(boxID);
+            }
+            else {
+                setNxtPlayBox(null);
+            }
         }
         console.log(nxtPlayBox);
         console.log('box  ' + boxID);
