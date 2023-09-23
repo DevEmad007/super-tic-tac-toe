@@ -1,86 +1,42 @@
-import { Hidden } from '@mui/material';
 import Cell from './Cell';
-import { useState,useEffect,useRef } from 'react';
+import { useState,useEffect } from 'react';
 
-
-const GameBox = ({ XsTurn,setXsTurn,id: boXId,setTrigerRender }) => {
+const GameBox = ({ XsTurn,setXsTurn,id: boxID,setData,CheckBox,nxtPlayBox }) => {
     const [ cell,setCell ] = useState(Array(9).fill(null));
-    const [ nxtPlayBox,setNxtPlayBox ] = useState('');
-    const [ firstTime,setFirstTime ] = useState(true);
-    const cellID = useRef();
-
-    const checkWinner = () => {
-        const lines = [
-            [ 0,1,2 ],
-            [ 3,4,5 ],
-            [ 6,7,8 ],
-            [ 0,3,6 ],
-            [ 1,4,7 ],
-            [ 2,5,8 ],
-            [ 0,4,8 ],
-            [ 2,4,6 ],
-        ];
-
-        for (let i = 0; i < lines.length; i++) {
-            const [ a,b,c ] = lines[ i ];
-            if (cell[ a ] && cell[ a ] === cell[ b ] && cell[ a ] === cell[ c ]) {
-                alert(cell[ a ] + 'winner');
-            }
-        }
-        return null;
-    };
-
-    const CheckBox = () => {
-
-        console.log(boXId);
-        console.log(cellID.current);
-        if (boXId == 0) {
-            if (cellID.current == 5) {
-                setNxtPlayBox(1);
-            }
-            if (cellID.current == 7) {
-                setNxtPlayBox(3);
-            }
-            if (cellID.current == 8) {
-                setNxtPlayBox(4);
-            }
-        }
-        setTrigerRender(e => e + 1);
-    };
 
     useEffect(() => {
-        checkWinner();
-        CheckBox();
+        setData(cell);
     },[ cell ]);
 
-    const handleClick = (e) => {
-        setFirstTime(false);
-        cellID.current = e;
+    const handleClick = (cell,cellID) => {
+
+        if (cell !== null) {
+            return;
+        }
         setXsTurn(!XsTurn);
         if (XsTurn) {
             setCell(prev => {
                 const newArray = [ ...prev ];
-                newArray[ e ] = 'X';
+                newArray[ cellID ] = 'X';
                 return newArray;
             });
         }
         else {
             setCell(prev => {
                 const newArray = [ ...prev ];
-                newArray[ e ] = 'O';
+                newArray[ cellID ] = 'O';
                 return newArray;
             });
         }
+        CheckBox(boxID,cellID);
     };
-    console.log(nxtPlayBox);
-    console.log(boXId);
+
     return (
         <div className='gameBox' >
-            <div className={`${firstTime ? 'hidden' :
-                nxtPlayBox == boXId ? 'layer' : 'hidden'}`}></div>
+            <div className={`${nxtPlayBox == null ? 'hidden' : nxtPlayBox == boxID ? 'hidden' : 'layer'}`}></div>
             {cell.map((cell,index) => <Cell
                 key={index}
-                handleClick={() => handleClick(index)}
+                handleClick={() => handleClick(cell,index)}
             >
                 {cell}
             </Cell>)}
