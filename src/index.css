@@ -8,13 +8,16 @@
 :root {
   line-height: 1.5;
   font-weight: 400;
-  color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+}
+
+#root {
+  background-color: #dddddd;
 }
 
 .gameboard {
@@ -54,7 +57,7 @@
 
 .O {
   position: absolute;
-  inset: 0;
+  inset: 3px;
   background-color:  rgba(240, 248, 255, 0.199);
 }
 
@@ -62,7 +65,7 @@
   position: absolute;
   inset: 0px;
   margin: 30px;
-  border: 20px solid red;
+  border: 20px solid rgb(24, 130, 252);
   border-radius: 50%;
   z-index: 20;
 }

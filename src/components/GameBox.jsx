@@ -1,8 +1,9 @@
 import Cell from './Cell';
 import { useState,useEffect } from 'react';
 
-const GameBox = ({ XsTurn,setXsTurn,bigBoxValue,id: boxID,setData,CheckBox,nxtPlayBox }) => {
+const GameBox = ({ XsTurn,setXsTurn,bigBoxValue,id: boxID,setData,CheckBox,nxtPlayBox,setNxtPlayBox }) => {
     const [ cell,setCell ] = useState(Array(9).fill(null));
+    const [ cellId,setCellId ] = useState();
 
     useEffect(() => {
         setData(cell);
@@ -28,9 +29,10 @@ const GameBox = ({ XsTurn,setXsTurn,bigBoxValue,id: boxID,setData,CheckBox,nxtPl
                 return newArray;
             });
         }
+        setCellId(cellID);
         CheckBox(boxID,cellID);
     };
-    console.log(bigBoxValue);
+
     return (
         <div className='gameBox' >
             <div className={`${bigBoxValue == null ? 'hidden' : bigBoxValue == 'X' ? 'X' : 'hidden'}`}></div>

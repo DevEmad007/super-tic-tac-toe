@@ -8,8 +8,8 @@ const Game = () => {
     const [ data,setData ] = useState();
     const [ nxtPlayBox,setNxtPlayBox ] = useState(null);
 
-    const checkWinner = () => {
-        if (data == null) {
+    const checkWinner = (cellData,showmessage) => {
+        if (cellData == null) {
             return;
         }
         const lines = [
@@ -22,11 +22,14 @@ const Game = () => {
             [ 0,4,8 ],
             [ 2,4,6 ],
         ];
-        console.log(XsTurn);
+
         for (let i = 0; i < lines.length; i++) {
             const [ a,b,c ] = lines[ i ];
-            if (data[ a ] && data[ a ] === data[ b ] && data[ a ] === data[ c ]) {
-                if (!XsTurn) { //condition is inverted bcz state changes one chick after
+            if (cellData[ a ] && cellData[ a ] === cellData[ b ] && cellData[ a ] === cellData[ c ]) {
+                if (showmessage) {
+                    alert(cellData[ a ] + ' winner');
+                }
+                if (!XsTurn) { //condition is inverted bcz state changes one click after
                     setBigBox(prev => {
                         const newArray = [ ...prev ];
                         newArray[ bigBoxID ] = 'X';
@@ -46,7 +49,8 @@ const Game = () => {
     };
 
     useEffect(() => {
-        checkWinner();
+        checkWinner(data,false);
+        checkWinner(bigBox,true);
     },[ data ]);
 
 
@@ -214,8 +218,11 @@ const Game = () => {
         }
         setBigBoxID(boxID);
     };
-    console.log('box  ' + bigBoxID);
-    console.log(bigBox);
+    useEffect(() => {
+        if (bigBox[ nxtPlayBox ] !== null) {
+            setNxtPlayBox(null);
+        }
+    });
     return (
         <div className="game">
             {
@@ -228,6 +235,7 @@ const Game = () => {
                         setData={setData}
                         CheckBox={CheckBox}
                         nxtPlayBox={nxtPlayBox}
+                        setNxtPlayBox={setNxtPlayBox}
                         key={index}
                     />
                 )
