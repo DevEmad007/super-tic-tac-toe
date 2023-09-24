@@ -1,20 +1,28 @@
 import { CancelPresentation,Circle,CircleOutlined,Close } from '@mui/icons-material';
 import React from 'react';
 
-const PlayerOne = () => {
-    return <CircleOutlined />;
+export const PlayerOne = ({ active,fontsize }) => {
+    return <CircleOutlined sx={{ color: active ? '#1882FC' : 'gray',fontSize: fontsize }} />;
 };
 
-const PlayerTwo = () => {
-    return <Close />;
+export const PlayerTwo = ({ active,fontsize }) => {
+    return <Close sx={{ color: active ? '#c4302b' : 'gray',fontSize: fontsize }} />;
 };
 
 const Cell = ({ children,handleClick }) => {
+    const screenWidth = screen.width;
+
     return (
         <div className='cell'
             onClick={handleClick}>
-            {children == 'X' && <PlayerTwo />}
-            {children == 'O' && <PlayerOne />}
+            {children == 'X' && <PlayerTwo
+                active={true}
+                fontsize={screenWidth > 600 && '56px'}
+            />}
+            {children == 'O' && <PlayerOne
+                active={true}
+                fontsize={screenWidth > 600 && '56px'}
+            />}
         </div>
     );
 };
