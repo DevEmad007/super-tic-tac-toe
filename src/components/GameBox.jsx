@@ -1,13 +1,29 @@
 import Cell from './Cell';
-import { useState,useEffect } from 'react';
+import { useState,useEffect,useRef } from 'react';
+import useSkipRender from './useSkipRender';
 
-const GameBox = ({ XsTurn,setXsTurn,bigBoxValue,id: boxID,setData,CheckBox,nxtPlayBox,setNxtPlayBox }) => {
+const GameBox = ({ XsTurn,setXsTurn,bigBoxValue,id: boxID,setData,CheckBox,nxtPlayBox,resetCell }) => {
     const [ cell,setCell ] = useState(Array(9).fill(null));
     const [ cellId,setCellId ] = useState();
+    const isFirstRender = useRef(true);
 
     useEffect(() => {
         setData(cell);
     },[ cell ]);
+
+    // useEffect(() => {
+    //     //skips first render
+    //     if (isFirstRender.current) {
+    //         isFirstRender.current = false;
+    //         return;
+    //     }
+    //     setCell(Array(9).fill(null));
+    // },[ resetCell ]);
+
+    useSkipRender(() => {
+        setCell(Array(9).fill(null));
+
+    },resetCell);
 
     const handleClick = (cell,cellID) => {
 

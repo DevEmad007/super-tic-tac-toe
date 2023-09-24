@@ -1,17 +1,23 @@
 import GameBox from "./GameBox";
-import { useState,useEffect,useRef } from 'react';
+import { useState,useEffect } from 'react';
+import { PlayerOne,PlayerTwo } from "./Cell";
+import BootstrapModal from "./BootstrapModal";
+import { Button } from "react-bootstrap";
+import useSkipRender from "./useSkipRender";
 
 const Game = () => {
     const [ bigBox,setBigBox ] = useState(Array(9).fill(null));
     const [ bigBoxID,setBigBoxID ] = useState();
     const [ XsTurn,setXsTurn ] = useState(true);
-    const [ data,setData ] = useState();
+    const [ data,setData ] = useState(null);
     const [ nxtPlayBox,setNxtPlayBox ] = useState(null);
+    const [ resetCell,setResetCell ] = useState(false);
+    const [ winner,setWinner ] = useState(null);
+    const [ modalShow,setModalShow ] = useState(false);
+
+    const screenWidth = screen.width;
 
     const checkWinner = (cellData,showmessage) => {
-        if (cellData == null) {
-            return;
-        }
         const lines = [
             [ 0,1,2 ],
             [ 3,4,5 ],
@@ -27,7 +33,8 @@ const Game = () => {
             const [ a,b,c ] = lines[ i ];
             if (cellData[ a ] && cellData[ a ] === cellData[ b ] && cellData[ a ] === cellData[ c ]) {
                 if (showmessage) {
-                    alert(cellData[ a ] + ' winner');
+                    setModalShow(true);
+                    setWinner(`${cellData[ a ]}`);
                 }
                 if (!XsTurn) { //condition is inverted bcz state changes one click after
                     setBigBox(prev => {
@@ -47,12 +54,12 @@ const Game = () => {
         }
         return null;
     };
+    console.log(winner);
 
     useEffect(() => {
         checkWinner(data,false);
         checkWinner(bigBox,true);
     },[ data ]);
-
 
     const CheckBox = (boxID,cellID) => {
         if (boxID == 4) {
@@ -218,29 +225,67 @@ const Game = () => {
         }
         setBigBoxID(boxID);
     };
+
     useEffect(() => {
         if (bigBox[ nxtPlayBox ] !== null) {
             setNxtPlayBox(null);
         }
     });
+
+    const handleReset = () => {
+        setBigBox(Array(9).fill(null));
+        setResetCell(!resetCell);
+        setNxtPlayBox(null);
+        setModalShow(false);
+        setWinner(null);
+    };
+
+    const handleClose = () => {
+        setModalShow(false);
+    };
+
     return (
-        <div className="game">
-            {
-                bigBox.map((value,index) =>
-                    < GameBox
-                        XsTurn={XsTurn}
-                        setXsTurn={setXsTurn}
-                        bigBoxValue={value}
-                        id={index}
-                        setData={setData}
-                        CheckBox={CheckBox}
-                        nxtPlayBox={nxtPlayBox}
-                        setNxtPlayBox={setNxtPlayBox}
-                        key={index}
-                    />
-                )
-            }
-        </div>
+        <>
+            <Button onClick={() => setModalShow(true)}>Reset</Button>
+            <BootstrapModal
+                winner={winner}
+                show={modalShow}
+                handleReset={handleReset}
+                handleClose={handleClose}
+                onHide={() => setModalShow(false)}
+            />
+            <div className="player">
+                <PlayerOne
+                    className={'playerone'}
+                    active={!XsTurn}
+                    fontsize={screenWidth > 600 ? '100px' : '66px'}
+                />
+            </div>
+            <div className="game">
+                {
+                    bigBox.map((value,index) =>
+                        < GameBox
+                            XsTurn={XsTurn}
+                            setXsTurn={setXsTurn}
+                            bigBoxValue={value}
+                            id={index}
+                            setData={setData}
+                            CheckBox={CheckBox}
+                            nxtPlayBox={nxtPlayBox}
+                            resetCell={resetCell}
+                            key={index}
+                        />
+                    )
+                }
+            </div>
+            <div className="player">
+                <PlayerTwo
+                    className={'playertwo'}
+                    active={XsTurn}
+                    fontsize={screenWidth > 600 ? '100px' : '66px'}
+                />
+            </div>
+        </>
     );
 };
 

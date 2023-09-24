@@ -1,3 +1,5 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
 * {
   margin: 0;
   padding: 0;
@@ -61,6 +63,13 @@
   z-index: 20;
 }
 
+.X {
+  position: absolute;
+  inset: 3px;
+  background-color: rgba(240, 248, 255, 0.199);
+  z-index: 20;
+}
+
 .X::before,.X::after{
   content: '';
   position: absolute;
@@ -77,13 +86,6 @@
 
 .X::after{
   transform: translateY(86px) rotate(-45deg);
-}
-
-.X {
-  position: absolute;
-  inset: 3px;
-  background-color: rgba(240, 248, 255, 0.199);
-  z-index: 20;
 }
 
 .cell {
