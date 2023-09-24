@@ -3,6 +3,7 @@ import { useState,useEffect,useRef } from 'react';
 
 const Game = () => {
     const [ bigBox,setBigBox ] = useState(Array(9).fill(null));
+    const [ bigBoxID,setBigBoxID ] = useState();
     const [ XsTurn,setXsTurn ] = useState(true);
     const [ data,setData ] = useState();
     const [ nxtPlayBox,setNxtPlayBox ] = useState(null);
@@ -21,11 +22,24 @@ const Game = () => {
             [ 0,4,8 ],
             [ 2,4,6 ],
         ];
-
+        console.log(XsTurn);
         for (let i = 0; i < lines.length; i++) {
             const [ a,b,c ] = lines[ i ];
             if (data[ a ] && data[ a ] === data[ b ] && data[ a ] === data[ c ]) {
-                alert(data[ a ] + '  winner');
+                if (!XsTurn) { //condition is inverted bcz state changes one chick after
+                    setBigBox(prev => {
+                        const newArray = [ ...prev ];
+                        newArray[ bigBoxID ] = 'X';
+                        return newArray;
+                    });
+                }
+                else {
+                    setBigBox(prev => {
+                        const newArray = [ ...prev ];
+                        newArray[ bigBoxID ] = 'O';
+                        return newArray;
+                    });
+                }
             }
         }
         return null;
@@ -198,11 +212,10 @@ const Game = () => {
                 setNxtPlayBox(null);
             }
         }
-        console.log(nxtPlayBox);
-        console.log('box  ' + boxID);
-        console.log('cell  ' + cellID);
+        setBigBoxID(boxID);
     };
-    console.log(nxtPlayBox);
+    console.log('box  ' + bigBoxID);
+    console.log(bigBox);
     return (
         <div className="game">
             {
@@ -210,6 +223,7 @@ const Game = () => {
                     < GameBox
                         XsTurn={XsTurn}
                         setXsTurn={setXsTurn}
+                        bigBoxValue={value}
                         id={index}
                         setData={setData}
                         CheckBox={CheckBox}
