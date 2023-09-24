@@ -18,6 +18,9 @@ const Game = () => {
     const screenWidth = screen.width;
 
     const checkWinner = (cellData,showmessage) => {
+        if (cellData === null) {
+            return;
+        }
         const lines = [
             [ 0,1,2 ],
             [ 3,4,5 ],
@@ -230,6 +233,7 @@ const Game = () => {
         if (bigBox[ nxtPlayBox ] !== null) {
             setNxtPlayBox(null);
         }
+        checkWinner(bigBox,true);
     });
 
     const handleReset = () => {
