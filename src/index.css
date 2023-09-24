@@ -52,6 +52,50 @@
   display: none;
 }
 
+.O {
+  position: absolute;
+  inset: 0;
+  background-color:  rgba(240, 248, 255, 0.199);
+}
+
+.O > div {
+  position: absolute;
+  inset: 0px;
+  margin: 30px;
+  border: 20px solid red;
+  border-radius: 50%;
+  z-index: 20;
+}
+
+.X::before{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background-color: #fc3319;
+  transform: translateY(86px) rotate(45deg);
+}
+
+.X {
+  position: absolute;
+  inset: 3px;
+  background-color: rgba(240, 248, 255, 0.199);
+  z-index: 20;
+}
+
+.X::after{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background-color: #fc3319;
+  transform: translateY(86px) rotate(-45deg);
+}
+
 .cell {
   display: flex;
   justify-content: center;

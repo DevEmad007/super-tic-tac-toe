@@ -33,6 +33,10 @@ const GameBox = ({ XsTurn,setXsTurn,bigBoxValue,id: boxID,setData,CheckBox,nxtPl
     console.log(bigBoxValue);
     return (
         <div className='gameBox' >
+            <div className={`${bigBoxValue == null ? 'hidden' : bigBoxValue == 'X' ? 'X' : 'hidden'}`}></div>
+            <div className={`${bigBoxValue == null ? 'hidden' : bigBoxValue == 'O' ? 'O' : 'hidden'}`}>
+                <div></div>
+            </div>
             <div className={`${nxtPlayBox == null ? 'hidden' : nxtPlayBox == boxID ? 'hidden' : 'layer'}`}></div>
             {cell.map((cell,index) => <Cell
                 key={index}
