@@ -100,6 +100,17 @@
   margin: 20px;
 }
 
+.resetBtn {
+  position: absolute;
+  top: 50px;
+  left: 50px;
+  transform: rotate(90deg);
+}
+
+.resetModal {
+  transform: rotate(90deg);
+}
+
 @media (max-width:770px) {
   .gameboard {
     flex-direction: column;
@@ -109,9 +120,19 @@
     margin: 15px;
     border: 18px solid rgb(24, 130, 252);
   }
+
+  .resetBtn {
+    margin-top: 30px;
+    position: relative;
+    top: 0px;
+    left: 0;
+  }
 }
 
 @media (max-width:460px) {
+  .resetBtn {
+    transform: rotate(0);
+  }
   .gameBox {
     position: relative;
     width: 100%;

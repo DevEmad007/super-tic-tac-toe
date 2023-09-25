@@ -17,11 +17,11 @@ const Cell = ({ children,handleClick }) => {
             onClick={handleClick}>
             {children == 'X' && <PlayerTwo
                 active={true}
-                fontsize={screenWidth > 600 && '56px'}
+                fontsize={screenWidth > 600 ? '56px' : '28px'}
             />}
             {children == 'O' && <PlayerOne
                 active={true}
-                fontsize={screenWidth > 600 && '56px'}
+                fontsize={screenWidth > 600 ? '56px' : '28px'}
             />}
         </div>
     );

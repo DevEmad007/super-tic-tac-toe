@@ -36,8 +36,9 @@ const Game = () => {
 
     return (
         <>
-            <Button onClick={() => setModalShow(true)}>Reset</Button>
+            <Button className="resetBtn" onClick={() => setModalShow(true)}>Reset</Button>
             <BootstrapModal
+                className='resetModal'
                 winner={winner}
                 show={modalShow}
                 handleReset={handleReset}
