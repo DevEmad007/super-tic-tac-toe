@@ -6,7 +6,7 @@ function BootstrapModal({ show,handleReset,handleClose,winner }) {
     return (
         <>
             <Modal
-                bsPrefix={`modal ${screenWidth > 600 ? 'resetModal' : ''}`}
+                bsPrefix={`modal ${1200 > screenWidth > 600 ? 'resetModal' : ''}`}
                 show={show}
                 onHide={handleClose}
                 backdrop="static"

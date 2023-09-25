@@ -111,6 +111,12 @@
   transform: rotate(90deg);
 }
 
+@media ( min-width:800px) {
+  .resetBtn {
+    transform: rotate(0);
+  }
+}
+
 @media (max-width:770px) {
   .gameboard {
     flex-direction: column;
@@ -126,6 +132,7 @@
     position: relative;
     top: 0px;
     left: 0;
+    transform: rotate(0);
   }
 }
 
