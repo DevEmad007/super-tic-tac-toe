@@ -1,5 +1,4 @@
 import GameBoard from './components/GameBoard';
-import Home from './home/index';
 
 const App = () => {
 
