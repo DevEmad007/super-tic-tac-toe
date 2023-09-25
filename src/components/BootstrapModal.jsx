@@ -17,22 +17,24 @@ function BootstrapModal({ show,handleReset,handleClose,winner }) {
                         {winner !== null ? `${winner}'s winner` : `Reset Game?`}
                     </Modal.Title>
                 </Modal.Header>
-                {winner === null ?
-                    (
-                        <Modal.Footer>
-                            <Button variant="secondary" onClick={handleReset}>
-                                Yes
-                            </Button>
-                            <Button variant="secondary" onClick={handleClose}>
-                                No
-                            </Button>
-                        </Modal.Footer>
-                    )
-                    :
-                    (<Button variant="secondary" onClick={handleReset}>
-                        Reset Game
-                    </Button>)
-                }
+                <Modal.Footer>
+                    {winner === null ?
+                        (
+                            <>
+                                <Button variant="secondary" onClick={handleReset}>
+                                    Yes
+                                </Button>
+                                <Button variant="secondary" onClick={handleClose}>
+                                    No
+                                </Button>
+                            </>
+                        )
+                        :
+                        (<Button variant="secondary" onClick={handleReset}>
+                            Reset Game
+                        </Button>)
+                    }
+                </Modal.Footer>
 
             </Modal>
         </>
