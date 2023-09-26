@@ -6,7 +6,7 @@ import { useGameContext } from '../hooks/useGameContext';
 const GameBox = ({ bigBoxValue,id: boxID,resetCell }) => {
     const [ cell,setCell ] = useState(Array(9).fill(null));
 
-    const { XsTurn,setXsTurn,CheckBox,checkWinner,nxtPlayBox } = useGameContext();
+    const { XsTurn,setXsTurn,CheckBox,isTwistModeOn,CheckBoxTwisted,checkWinner,nxtPlayBox } = useGameContext();
 
     useSkipRender(() => {
         setCell(Array(9).fill(null));
@@ -35,7 +35,12 @@ const GameBox = ({ bigBoxValue,id: boxID,resetCell }) => {
             });
         }
         // set the value of array depending on player 
-        CheckBox(boxID,cellID);
+
+        if (isTwistModeOn) {
+            CheckBoxTwisted(boxID,cellID);
+        } else {
+            CheckBox(boxID,cellID);
+        }
         //set next gamebox to to play
     };
 

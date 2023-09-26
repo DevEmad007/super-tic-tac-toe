@@ -13,7 +13,7 @@ export const GameContext = ({ children }) => {
     const [ modalShow,setModalShow ] = useState(false);
     const [ nxtPlayBox,setNxtPlayBox ] = useState(null);
     const [ winner,setWinner ] = useState(null);
-
+    const [ isTwistModeOn,setIsTwistModeOn ] = useState(false);
 
     const lines = [
         [ 0,1,2 ],
@@ -57,7 +57,7 @@ export const GameContext = ({ children }) => {
         checkWinner(bigBox);
     },[ XsTurn ]);
 
-    const CheckBox = (boxID,cellID) => {
+    const CheckBoxTwisted = (boxID,cellID) => {
         if (boxID == 4) {
             setNxtPlayBox(cellID);
         }
@@ -223,6 +223,19 @@ export const GameContext = ({ children }) => {
         // id of current gameBox
     };
 
+    const handleTwistMode = () => {
+        setIsTwistModeOn(true);
+    };
+
+    const handleNormalMode = () => {
+        setIsTwistModeOn(false);
+    };
+
+    const CheckBox = (boxID,cellID) => {
+        setNxtPlayBox(cellID);
+        setBigBoxID(boxID);
+    };
+
     useEffect(() => {
         if (bigBox[ nxtPlayBox ] !== null) {
             setNxtPlayBox(null);
@@ -248,9 +261,13 @@ export const GameContext = ({ children }) => {
         winner,
         setWinner,
         CheckBox,
+        isTwistModeOn,
+        CheckBoxTwisted,
         modalShow,
         setModalShow,
-        setNxtPlayBox
+        setNxtPlayBox,
+        handleTwistMode,
+        handleNormalMode
     };
     return < gameContext.Provider value={values}> {children}</gameContext.Provider>;
 };
