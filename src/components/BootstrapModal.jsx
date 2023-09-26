@@ -1,7 +1,7 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-function BootstrapModal({ show,handleReset,handleClose,winner }) {
+function BootstrapModal({ isHomeBtnClicked,show,handleReset,handleClose,winner }) {
     const screenWidth = screen.width;
     return (
         <>
@@ -14,7 +14,8 @@ function BootstrapModal({ show,handleReset,handleClose,winner }) {
                 centered>
                 <Modal.Header>
                     <Modal.Title>
-                        {winner !== null ? `${winner}'s winner` : `Reset Game?`}
+                        {isHomeBtnClicked ? `Quit Game? ` :
+                            winner !== null ? `${winner}'s winner` : `Reset Game?`}
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Footer>

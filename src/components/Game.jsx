@@ -4,9 +4,12 @@ import { PlayerOne,PlayerTwo } from "./Cell";
 import BootstrapModal from "./BootstrapModal";
 import { Button } from "react-bootstrap";
 import { useGameContext } from "../hooks/useGameContext";
+import { useNavigate } from "react-router-dom";
 
 const Game = () => {
     const [ resetCell,setResetCell ] = useState(false);
+    const [ isHomeBtnClicked,setIsHomeBtnClicked ] = useState(false);
+    const navigate = useNavigate();
     const screenWidth = screen.width;
 
     const {
@@ -26,11 +29,17 @@ const Game = () => {
         setNxtPlayBox(null);
         setModalShow(false);
         setWinner(null);
+        if (isHomeBtnClicked) {
+            console.log('first');
+            navigate('/');
+        }
+        setIsHomeBtnClicked(false);
         //closes modal and resets the game 
     };
 
     const handleClose = () => {
         setModalShow(false);
+        setIsHomeBtnClicked(false);
         //closes modal without reset
     };
 
@@ -41,6 +50,7 @@ const Game = () => {
                 className='resetModal'
                 winner={winner}
                 show={modalShow}
+                isHomeBtnClicked={isHomeBtnClicked}
                 handleReset={handleReset}
                 handleClose={handleClose}
                 onHide={() => setModalShow(false)}
@@ -72,6 +82,10 @@ const Game = () => {
                     fontsize={screenWidth > 600 ? '100px' : '66px'}
                 />
             </div>
+            <Button className="goToHome" onClick={() => {
+                setModalShow(true);
+                setIsHomeBtnClicked(true);
+            }}>Home</Button>
         </>
     );
 };
