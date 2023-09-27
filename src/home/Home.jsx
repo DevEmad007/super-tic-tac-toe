@@ -1,18 +1,16 @@
-import React,{ useEffect,useState } from 'react';
-import { ButtonGroup,Button,Container,Row,Col } from 'react-bootstrap';
-import { Link,redirect,useNavigate } from 'react-router-dom';
+import React,{ useState } from 'react';
+import { Button,Container,Row,Col } from 'react-bootstrap';
+import { Link,useNavigate } from 'react-router-dom';
 import { useGameContext } from '../hooks/useGameContext';
-import useDb from '../API/useDb';
-import AuthModal from '../components/AuthModal';
+import AuthModal from '../components/modals/AuthModal';
 import useAuth from '../API/useAuth';
-import useSkipRender from '../components/useSkipRender';
+import useSkipRender from '../hooks/useSkipRender';
 import { Avatar } from '@mui/material';
 import ProfileModal from '../components/modals/ProfileModal';
 import ShowDp from '../components/ShowDp';
 
 const Home = () => {
     const { handleTwistMode,handleNormalMode } = useGameContext();
-    const { writeUserData } = useDb();
     const { user,userUID } = useAuth();
     const navigate = useNavigate();
     const [ isAuthModalOpen,setIsAuthModalOpen ] = useState(false);

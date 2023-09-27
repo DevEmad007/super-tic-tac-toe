@@ -1,7 +1,7 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-function BootstrapModal({ isHomeBtnClicked,show,handleReset,handleClose,winner }) {
+function InGameModal({ isHomeBtnClicked,show,handleReset,handleClose,winner }) {
     const screenWidth = screen.width;
     return (
         <>
@@ -42,4 +42,4 @@ function BootstrapModal({ isHomeBtnClicked,show,handleReset,handleClose,winner }
     );
 }
 
-export default BootstrapModal;
+export default InGameModal;

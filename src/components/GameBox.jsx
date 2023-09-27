@@ -1,6 +1,6 @@
 import Cell from './Cell';
 import { useState,useEffect } from 'react';
-import useSkipRender from './useSkipRender';
+import useSkipRender from './../hooks/useSkipRender';
 import { useGameContext } from '../hooks/useGameContext';
 
 const GameBox = ({ bigBoxValue,id: boxID,resetCell }) => {

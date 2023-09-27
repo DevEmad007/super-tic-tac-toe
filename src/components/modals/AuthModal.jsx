@@ -1,5 +1,5 @@
 import React from 'react';
-import useAuth from '../API/useAuth';
+import useAuth from '../../API/useAuth';
 import { Cancel,Google,HdrAuto } from '@mui/icons-material';
 import Modal from 'react-bootstrap/Modal';
 

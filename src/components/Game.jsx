@@ -1,7 +1,7 @@
 import GameBox from "./GameBox";
 import { useState } from 'react';
 import { PlayerOne,PlayerTwo } from "./Cell";
-import BootstrapModal from "./BootstrapModal";
+import InGameModal from "./modals/BootstrapModal";
 import { Button } from "react-bootstrap";
 import { useGameContext } from "../hooks/useGameContext";
 import { useNavigate } from "react-router-dom";
@@ -45,7 +45,7 @@ const Game = () => {
     return (
         <>
             <Button className="resetBtn" onClick={() => setModalShow(true)}>Reset</Button>
-            <BootstrapModal
+            <InGameModal
                 className='resetModal'
                 winner={winner}
                 show={modalShow}
