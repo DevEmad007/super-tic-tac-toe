@@ -30,7 +30,6 @@ const Game = () => {
         setModalShow(false);
         setWinner(null);
         if (isHomeBtnClicked) {
-            console.log('first');
             navigate('/');
         }
         setIsHomeBtnClicked(false);
