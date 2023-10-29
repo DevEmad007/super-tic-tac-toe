@@ -275,24 +275,24 @@ export const GameContext = ({ children }) => {
     });
 
     useEffect(() => {
-        if (isOnlinePlaying) {
-            const roomDbRef = doc(db,"room",roomID.toString());
-            onSnapshot(roomDbRef,(doc) => {
-                const roomDb = doc.data();
-                if (roomDb !== undefined) {
-                    if (roomDb.playerOne === null || roomDb.playerTwo === null) {
-                        setPlayersIn(false);
-                    } else {
-                        setPlayersIn(true);
-                        setBigBox(roomDb.bigBox);
-                    }
-                }
-            });
-        }
+        // if (isOnlinePlaying) {
+        //     const roomDbRef = doc(db,"room",roomID.toString());
+        //     onSnapshot(roomDbRef,(doc) => {
+        //         const roomDb = doc.data();
+        //         if (roomDb !== undefined) {
+        //             if (roomDb.playerOne === null || roomDb.playerTwo === null) {
+        //                 setPlayersIn(false);
+        //             } else {
+        //                 setPlayersIn(true);
+        //                 setBigBox(roomDb.bigBox);
+        //             }
+        //         }
+        //     });
+        // }
         if (isOnlinePlaying) {
             updateRoom();
         }
-    },[ XsTurn ]);
+    },[ XsTurn,bigBox ]);
 
     const createRoom = async (roomID) => {
         setRoomID(roomID);

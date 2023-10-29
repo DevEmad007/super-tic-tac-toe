@@ -13,7 +13,9 @@ const ProfileModal = ({ show,handleHideModal }) => {
             bsPrefix={`modal ${1200 > screenWidth > 600 ? 'resetModal' : ''}`}
             show={show}
             onHide={handleHideModal}
-            centered>
+            centered
+            className='p-4'
+        >
             <Modal.Header>
                 <Modal.Title>
                     Sign In To Play Online

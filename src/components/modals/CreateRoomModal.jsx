@@ -24,6 +24,7 @@ const CreateRoomModal = ({ show,handleCancel,roomID }) => {
             onHide={handleCancel}
             backdrop='static'
             centered
+            className='p-2'
         >
             <Modal.Body >
                 <Container fluid>

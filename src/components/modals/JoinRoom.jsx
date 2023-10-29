@@ -16,6 +16,7 @@ const JoinRoom = ({ show,cancelModal }) => {
             show={show}
             centered
             onHide={cancelModal}
+            className='p-2'
         >
             <Modal.Body>
                 <Form>
@@ -27,12 +28,11 @@ const JoinRoom = ({ show,cancelModal }) => {
                     </Form.Group>
                 </Form>
             </Modal.Body>
-            <Modal.Footer>
-                <Button
-                    onClick={handleJoin}>
-                    Join
-                </Button>
-            </Modal.Footer>
+            <Button
+                className='mx-3 mt-2 m-3'
+                onClick={handleJoin}>
+                Join
+            </Button>
         </Modal>
     );
 };
