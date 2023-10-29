@@ -7,14 +7,12 @@ import OnlinePlay from './components/OnlinePlay';
 const App = () => {
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path={'/'} element={<Home />} />
-        <Route path={'/game'} element={<GameBoard />} />
-        <Route path={'/game-online'} element={<OnlinePlay />} />
-        <Route path={'/game-tutorial'} element={<Tiutorial />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path={'/'} element={<Home />} />
+      <Route path={'/game'} element={<GameBoard />} />
+      <Route path={'/game-online'} element={<OnlinePlay />} />
+      <Route path={'/game-tutorial'} element={<Tiutorial />} />
+    </Routes>
   );
 };
 

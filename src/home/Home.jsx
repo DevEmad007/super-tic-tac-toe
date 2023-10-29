@@ -1,63 +1,20 @@
 import React,{ useState } from 'react';
-import { Button,Container,Row,Col } from 'react-bootstrap';
+import { Button,Container,Row,Col,Image } from 'react-bootstrap';
 import { Link,useNavigate } from 'react-router-dom';
 import { useGameContext } from '../hooks/useGameContext';
-import AuthModal from '../components/modals/AuthModal';
-import useAuth from '../API/useAuth';
-import useSkipRender from '../hooks/useSkipRender';
-import { Avatar } from '@mui/material';
-import ProfileModal from '../components/modals/ProfileModal';
-import ShowDp from '../components/ShowDp';
 
 const Home = () => {
     const { handleTwistMode,handleNormalMode } = useGameContext();
-    const { user,userUID } = useAuth();
     const navigate = useNavigate();
-    const [ isAuthModalOpen,setIsAuthModalOpen ] = useState(false);
-    const [ isProfileShowed,setIsProfileShowed ] = useState(false);
-
+    const [ isRoomModalOpen,setIsRoomModalOpen ] = useState(false);
 
     const handleOpenModal = () => {
-        if (user === null) {
-            setIsAuthModalOpen(true);
-        } else {
-            setIsAuthModalOpen(false);
-            navigate('/game-online');
-        }
-    };
 
-    const handleCancel = () => {
-        setIsAuthModalOpen(false);
-    };
-
-    useSkipRender(() => {
-        setIsAuthModalOpen(false);
-    },user);
-
-    const handleProfileModal = () => {
-        setIsProfileShowed(true);
-    };
-
-    const handleHideModal = () => {
-        setIsProfileShowed(false);
     };
 
     return (
         <>
-            <AuthModal
-                show={isAuthModalOpen}
-                handleCancel={handleCancel}
-            />
             <Container className='home'>
-                <div className='profile' onClick={handleProfileModal}>
-                    {
-                        user === null ?
-                            <Avatar />
-                            :
-                            <ShowDp img={user.photoURL} />
-                    }
-                </div>
-                <ProfileModal show={isProfileShowed} handleHideModal={handleHideModal} />
                 <Row>
                     <Col>
                         <Link to={'/game'}>

@@ -4,11 +4,14 @@ import App from './App.jsx';
 import './index.css';
 import { GameContext } from './hooks/useGameContext.jsx';
 import { app } from './firebaseConfig.js';
+import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   // <React.StrictMode>
-  <GameContext>
-    <App />
-  </GameContext>
+  <BrowserRouter>
+    <GameContext>
+      <App />
+    </GameContext>
+  </BrowserRouter>
   /* </React.StrictMode> */
 );

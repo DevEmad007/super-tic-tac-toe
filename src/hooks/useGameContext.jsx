@@ -1,5 +1,10 @@
 import { createContext,useContext } from "react";
 import { useState,useEffect } from "react";
+import { getFirestore,doc,setDoc,getDocs,updateDoc,onSnapshot } from "firebase/firestore";
+import useAuth from "../API/useAuth";
+import { useNavigate } from "react-router";
+
+
 export const gameContext = createContext();
 
 export const useGameContext = () => {
@@ -7,6 +12,9 @@ export const useGameContext = () => {
 };
 
 export const GameContext = ({ children }) => {
+    const db = getFirestore();
+    const { userUID } = useAuth();
+    const navigate = useNavigate();
     const [ bigBox,setBigBox ] = useState(Array(9).fill(null));
     const [ XsTurn,setXsTurn ] = useState(true);
     const [ bigBoxID,setBigBoxID ] = useState();
@@ -14,6 +22,23 @@ export const GameContext = ({ children }) => {
     const [ nxtPlayBox,setNxtPlayBox ] = useState(null);
     const [ winner,setWinner ] = useState(null);
     const [ isTwistModeOn,setIsTwistModeOn ] = useState(false);
+    const [ isOnlinePlaying,setIsOnlinePlaying ] = useState(false);
+    const [ roomID,setRoomID ] = useState(null);
+    const [ playersIn,setPlayersIn ] = useState();
+    const [ bigBoxOnline,setBigBoxOnline ] = useState();
+
+
+    const updateRoom = async () => {
+        const roomRef = doc(db,"room",roomID.toString());
+        try {
+            await updateDoc(roomRef,{
+                XsTurn: XsTurn,
+                bigBox: bigBox
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const lines = [
         [ 0,1,2 ],
@@ -225,9 +250,11 @@ export const GameContext = ({ children }) => {
 
     const handleTwistMode = () => {
         setIsTwistModeOn(true);
+        setIsOnlinePlaying(false);
     };
 
     const handleNormalMode = () => {
+        setIsOnlinePlaying(false);
         setIsTwistModeOn(false);
     };
 
@@ -249,10 +276,75 @@ export const GameContext = ({ children }) => {
                 }
             }
         }
+        if (isOnlinePlaying) {
+            const roomDbRef = doc(db,"room",roomID.toString());
+            onSnapshot(roomDbRef,(doc) => {
+                const roomDb = doc.data();
+                if (roomDb !== undefined) {
+                    if (roomDb.playerOne === null || roomDb.playerTwo === null) {
+                        setPlayersIn(false);
+                    } else {
+                        setPlayersIn(true);
+                        setBigBox(roomDb.bigBox);
+                    }
+                }
+            });
+        }
+        if (isOnlinePlaying) {
+            updateRoom();
+        }
     });
+
+    const createRoom = async (roomID) => {
+        setRoomID(roomID);
+        const dbRef = doc(db,"room",roomID.toString());
+        const roomData = {
+            id: roomID,
+            playerOne: userUID,
+            playerTwo: null,
+            XsTurn: XsTurn,
+            bigBox: Array(9).fill(null),
+            smallBox: {
+                id0: Array(9).fill(null),
+                id1: Array(9).fill(null),
+                id2: Array(9).fill(null),
+                id3: Array(9).fill(null),
+                id4: Array(9).fill(null),
+                id5: Array(9).fill(null),
+                id6: Array(9).fill(null),
+                id7: Array(9).fill(null),
+                id8: Array(9).fill(null),
+            }
+        };
+        try {
+            await setDoc(dbRef,roomData);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const joinRoom = async (roomID) => {
+        setRoomID(roomID);
+        const dbRef = doc(db,"room",roomID.toString());
+        try {
+            await updateDoc(dbRef,{
+                'playerTwo': userUID
+            });
+            navigate('/game');
+            setIsOnlinePlaying(true);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleOnlinePlay = () => {
+        setIsOnlinePlaying(true);
+        navigate('/game');
+    };
 
     const values = {
         bigBox,
+        bigBoxID,
         setBigBox,
         XsTurn,
         setXsTurn,
@@ -267,7 +359,13 @@ export const GameContext = ({ children }) => {
         setModalShow,
         setNxtPlayBox,
         handleTwistMode,
-        handleNormalMode
+        handleNormalMode,
+        handleOnlinePlay,
+        roomID,
+        isOnlinePlaying,
+        createRoom,
+        joinRoom,
+        playersIn
     };
     return < gameContext.Provider value={values}> {children}</gameContext.Provider>;
 };
