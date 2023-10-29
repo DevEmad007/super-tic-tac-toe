@@ -1,7 +1,6 @@
 import { createContext,useContext } from "react";
 import { useState,useEffect } from "react";
 import { getFirestore,doc,setDoc,getDocs,updateDoc,onSnapshot } from "firebase/firestore";
-import useAuth from "../API/useAuth";
 import { useNavigate } from "react-router";
 
 
@@ -13,7 +12,6 @@ export const useGameContext = () => {
 
 export const GameContext = ({ children }) => {
     const db = getFirestore();
-    const { userUID } = useAuth();
     const navigate = useNavigate();
     const [ bigBox,setBigBox ] = useState(Array(9).fill(null));
     const [ XsTurn,setXsTurn ] = useState(true);
@@ -25,8 +23,6 @@ export const GameContext = ({ children }) => {
     const [ isOnlinePlaying,setIsOnlinePlaying ] = useState(false);
     const [ roomID,setRoomID ] = useState(null);
     const [ playersIn,setPlayersIn ] = useState();
-    const [ bigBoxOnline,setBigBoxOnline ] = useState();
-
 
     const updateRoom = async () => {
         const roomRef = doc(db,"room",roomID.toString());
@@ -264,18 +260,22 @@ export const GameContext = ({ children }) => {
     };
 
     useEffect(() => {
-        if (bigBox[ nxtPlayBox ] !== null) {
-            setNxtPlayBox(null);
-        }
-        if (bigBox !== null) {
-            for (let i = 0; i < lines.length; i++) {
-                const [ a,b,c ] = lines[ i ];
-                if (bigBox[ a ] && bigBox[ a ] === bigBox[ b ] && bigBox[ a ] === bigBox[ c ]) {
-                    setModalShow(true);
-                    setWinner(`${bigBox[ a ]}`);
-                }
-            }
-        }
+        // if (bigBox[ nxtPlayBox ] !== null) {
+        //     setNxtPlayBox(null);
+        // }
+        // if (bigBox !== null) {
+        //     for (let i = 0; i < lines.length; i++) {
+        //         const [ a,b,c ] = lines[ i ];
+        //         if (bigBox[ a ] && bigBox[ a ] === bigBox[ b ] && bigBox[ a ] === bigBox[ c ]) {
+        //             setModalShow(true);
+        //             setWinner(`${bigBox[ a ]}`);
+        //         }
+        //     }
+        // }
+
+    });
+
+    useEffect(() => {
         if (isOnlinePlaying) {
             const roomDbRef = doc(db,"room",roomID.toString());
             onSnapshot(roomDbRef,(doc) => {
@@ -293,15 +293,14 @@ export const GameContext = ({ children }) => {
         if (isOnlinePlaying) {
             updateRoom();
         }
-    });
-
+    },[ XsTurn ]);
     const createRoom = async (roomID) => {
         setRoomID(roomID);
         const dbRef = doc(db,"room",roomID.toString());
         const roomData = {
             id: roomID,
-            playerOne: userUID,
-            playerTwo: null,
+            playerOneIn: true,
+            playerTwoIn: null,
             XsTurn: XsTurn,
             bigBox: Array(9).fill(null),
             smallBox: {
@@ -328,7 +327,7 @@ export const GameContext = ({ children }) => {
         const dbRef = doc(db,"room",roomID.toString());
         try {
             await updateDoc(dbRef,{
-                'playerTwo': userUID
+                'playerTwoIn': true
             });
             navigate('/game');
             setIsOnlinePlaying(true);
