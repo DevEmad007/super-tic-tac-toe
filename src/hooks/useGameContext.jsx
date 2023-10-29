@@ -260,19 +260,18 @@ export const GameContext = ({ children }) => {
     };
 
     useEffect(() => {
-        // if (bigBox[ nxtPlayBox ] !== null) {
-        //     setNxtPlayBox(null);
-        // }
-        // if (bigBox !== null) {
-        //     for (let i = 0; i < lines.length; i++) {
-        //         const [ a,b,c ] = lines[ i ];
-        //         if (bigBox[ a ] && bigBox[ a ] === bigBox[ b ] && bigBox[ a ] === bigBox[ c ]) {
-        //             setModalShow(true);
-        //             setWinner(`${bigBox[ a ]}`);
-        //         }
-        //     }
-        // }
-
+        if (bigBox[ nxtPlayBox ] !== null) {
+            setNxtPlayBox(null);
+        }
+        if (bigBox !== null) {
+            for (let i = 0; i < lines.length; i++) {
+                const [ a,b,c ] = lines[ i ];
+                if (bigBox[ a ] && bigBox[ a ] === bigBox[ b ] && bigBox[ a ] === bigBox[ c ]) {
+                    setModalShow(true);
+                    setWinner(`${bigBox[ a ]}`);
+                }
+            }
+        }
     });
 
     useEffect(() => {
@@ -294,6 +293,7 @@ export const GameContext = ({ children }) => {
             updateRoom();
         }
     },[ XsTurn ]);
+
     const createRoom = async (roomID) => {
         setRoomID(roomID);
         const dbRef = doc(db,"room",roomID.toString());
