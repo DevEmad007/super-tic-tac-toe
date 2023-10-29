@@ -8,7 +8,7 @@ const JoinRoom = ({ show,cancelModal }) => {
     const { joinRoom } = useGameContext();
 
     const handleJoin = () => {
-        joinRoom(roomID);
+        joinRoom(roomID.toString());
     };
 
     return (
@@ -23,9 +23,8 @@ const JoinRoom = ({ show,cancelModal }) => {
                         <Form.Label>
                             Enter Room ID
                         </Form.Label>
-                        <Form.Control onChange={e => setRoomID(e.target.value)} type="number"></Form.Control>
+                        <Form.Control autoFocus onenter onChange={e => setRoomID(e.target.value)} type="number"></Form.Control>
                     </Form.Group>
-
                 </Form>
             </Modal.Body>
             <Modal.Footer>

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Button,Col,Container,Modal,Row } from 'react-bootstrap';
-import { useGameContext } from '../../hooks/useGameContext';
 import CreateRoomModal from './CreateRoomModal';
 import JoinRoom from './JoinRoom';
 
@@ -8,13 +7,11 @@ const RoomModal = ({ show,handleCancel,children }) => {
     const [ isModalOpen,setIsModalOpen ] = useState(false);
     const [ isJoinModalOpen,setIsJoinModalOpen ] = useState(false);
     const [ roomID,setRoomID ] = useState(null);
-    const { createRoom } = useGameContext();
 
     const generateRandomNumberWithoutZero = () => {
         // Generate a random number between 1 and 999999
         let randomNumber = Math.floor(Math.random() * 999999) + 1;
 
-        // Check if the random number contains 0
         if (randomNumber.toString().indexOf('0') !== -1) {
             // If it does, generate a new random number
             randomNumber = Math.floor(Math.random() * 999999) + 1;
@@ -24,12 +21,13 @@ const RoomModal = ({ show,handleCancel,children }) => {
         return randomNumber;
     };
 
-    // useSkipRender(() => {
-
-    // },roomID)
-
     const handleCreateRoomModal = () => {
-        setRoomID(generateRandomNumberWithoutZero());
+        setRoomID(() => {
+            while (generateRandomNumberWithoutZero().length < 6) {
+                return generateRandomNumberWithoutZero();
+            }
+            return generateRandomNumberWithoutZero();
+        });
         setIsModalOpen(true);
     };
 
@@ -46,12 +44,14 @@ const RoomModal = ({ show,handleCancel,children }) => {
     const openJoinModal = () => {
         setIsJoinModalOpen(true);
     };
-    console.log(roomID);
+
     return (
         <>
-            <CreateRoomModal show={isModalOpen} handleCancel={handleCancelCreateModal} >
-                {roomID}
-            </CreateRoomModal>
+            <CreateRoomModal
+                show={isModalOpen}
+                handleCancel={handleCancelCreateModal}
+                roomID={roomID}
+            />
             <JoinRoom
                 show={isJoinModalOpen}
                 cancelModal={closeJoinModal}

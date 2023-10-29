@@ -6,13 +6,13 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useState } from 'react';
 import useSkipRender from '../../hooks/useSkipRender';
 
-const CreateRoomModal = ({ show,handleCancel,children }) => {
-    const { handleOnlinePlay } = useGameContext();
+const CreateRoomModal = ({ show,handleCancel,roomID }) => {
+    const { handleOnlinePlay,createRoom } = useGameContext();
     const [ message,setMessage ] = useState('');
 
     useSkipRender(() => {
         setMessage('');
-    },children);
+    },roomID);
 
     const handleCopy = () => {
         setMessage('copied!');
@@ -34,11 +34,11 @@ const CreateRoomModal = ({ show,handleCancel,children }) => {
                             </span>
                         </Col>
                         <Col className='text-center'>
-                            <CopyToClipboard text={children}
+                            <CopyToClipboard text={roomID}
                                 onCopy={handleCopy}
                             >
                                 <span className='text-nowrap'>
-                                    {children}
+                                    {roomID}
                                     <CopyAll sx={{ marginLeft: '10px' }} />
                                     {message}
                                 </span>
@@ -47,7 +47,15 @@ const CreateRoomModal = ({ show,handleCancel,children }) => {
                     </Row>
                     <Row>
                         <Col>
-                            <Button className="w-100 my-2" onClick={handleOnlinePlay}>Enter Game</Button>
+                            <Button
+                                className="w-100 my-2"
+                                onClick={() => {
+                                    handleOnlinePlay();
+                                    createRoom(roomID);
+                                }}
+                            >
+                                Enter Game
+                            </Button>
                         </Col>
                     </Row>
                     <Row>
