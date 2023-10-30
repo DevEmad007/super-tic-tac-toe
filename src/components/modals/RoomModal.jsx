@@ -66,21 +66,14 @@ const RoomModal = ({ show,handleCancel,children }) => {
                     className='mt-2'
                 >
                     <Container>
-                        <Row>
-                            <Col className='text-center '>
-                                <h1>
-                                    Under development
-                                </h1>
+                        <Row >
+                            <Col className='text-center'>
+                                <Button onClick={handleCreateRoomModal}>Create Room</Button>
+                            </Col>
+                            <Col className='text-center'>
+                                <Button onClick={openJoinModal}>Join Room</Button>
                             </Col>
                         </Row>
-                        {/* <Row >
-                            <Col className='text-center'>
-                                <Button onClick={'handleCreateRoomModal'}>Create Room</Button>
-                            </Col>
-                            <Col className='text-center'>
-                                <Button onClick={'openJoinModal'}>Join Room</Button>
-                            </Col>
-                        </Row> */}
                     </Container>
                 </Modal.Body>
                 <Button className='m-3' onClick={handleCancel}> Cancle </Button>
