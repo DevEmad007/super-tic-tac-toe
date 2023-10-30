@@ -22,8 +22,22 @@ export const GameContext = ({ children }) => {
     const [ isTwistModeOn,setIsTwistModeOn ] = useState(false);
     const [ isOnlinePlaying,setIsOnlinePlaying ] = useState(false);
     const [ roomID,setRoomID ] = useState('');
-    const [ playersIn,setPlayersIn ] = useState();
     const [ roomData,setRoomData ] = useState();
+    const [ playersIn,setPlayersIn ] = useState();
+
+    if (isOnlinePlaying) {
+        // Convert the object to a JSON string.
+        // const jsonString = JSON.stringify(roomData);
+        // Set the localStorage.setItem() method to store the JSON string in local storage.
+        // localStorage.setItem('roomData',jsonString);
+        // Get the JSON string from local storage.
+        // const getjsonString = localStorage.getItem('roomData');
+        // console.log(getjsonString);
+        // Convert the JSON string to an object.
+        // if (getjsonString) {
+        // const objectFromStorage = JSON.parse(getjsonString);
+        // }
+    }
 
     const handleOnlinePlay = () => {
         setIsOnlinePlaying(true);
@@ -60,8 +74,6 @@ export const GameContext = ({ children }) => {
         }
     };
 
-    console.log(roomData);
-
     const joinRoom = async (roomID) => {
         handleOnlinePlay();
         setRoomID(roomID.toString());
@@ -77,9 +89,27 @@ export const GameContext = ({ children }) => {
             doc(db,"room",roomID.toString()),
             { includeMetadataChanges: true },
             (doc) => {
-                setRoomData(doc.data());
+                setRoomData(doc.data()); //sets room data to local storage
             });
     };
+
+    const getRoomData = () => {
+        if (isOnlinePlaying) {
+            onSnapshot(
+                doc(db,"room",roomID.toString()),
+                { includeMetadataChanges: true },
+                (doc) => {
+                    setRoomData(doc.data()); //sets room data to local storage
+                });
+        }
+    };
+
+    useEffect(() => {
+
+        window.setInterval(getRoomData,5000);
+
+        return () => window.clearInterval(getRoomData);
+    },[ isOnlinePlaying ]);
 
     const updateRoom = async () => {
         const roomRef = doc(db,"room",roomID);
@@ -92,6 +122,8 @@ export const GameContext = ({ children }) => {
             console.log(error);
         }
     };
+
+    console.log(roomData);
 
     const lines = [
         [ 0,1,2 ],
@@ -355,11 +387,11 @@ export const GameContext = ({ children }) => {
         setNxtPlayBox,
         handleTwistMode,
         handleNormalMode,
-        roomID,
         isOnlinePlaying,
         setIsOnlinePlaying,
         createRoom,
         joinRoom,
+        roomID,
         roomData,
         playersIn
     };

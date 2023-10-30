@@ -42,9 +42,9 @@ const CreateRoomModal = ({ show,handleCancel,roomID }) => {
                             <CopyToClipboard text={roomID}
                                 onCopy={handleCopy}
                             >
-                                <span className='text-nowrap'>
+                                <span className='text-nowrap cursor-pointer'>
                                     {roomID}
-                                    <CopyAll sx={{ marginLeft: '10px' }} />
+                                    <CopyAll sx={{ marginLeft: '10px',cursor: 'pointer' }} />
                                     {message}
                                 </span>
                             </CopyToClipboard>
