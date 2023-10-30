@@ -1,6 +1,5 @@
 import React,{ useState } from 'react';
 import { Button,Modal,Form } from 'react-bootstrap';
-import useDb from '../../API/useDb';
 import { useGameContext } from '../../hooks/useGameContext';
 
 const JoinRoom = ({ show,cancelModal }) => {
