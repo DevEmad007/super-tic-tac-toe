@@ -1,4 +1,4 @@
-import { createContext,useContext } from "react";
+import { createContext,useContext,useRef } from "react";
 import { useState,useEffect } from "react";
 import { getFirestore,doc,setDoc,getDocs,updateDoc,onSnapshot } from "firebase/firestore";
 import { useNavigate } from "react-router";
@@ -21,11 +21,12 @@ export const GameContext = ({ children }) => {
     const [ winner,setWinner ] = useState(null);
     const [ isTwistModeOn,setIsTwistModeOn ] = useState(false);
     const [ isOnlinePlaying,setIsOnlinePlaying ] = useState(false);
-    const [ roomID,setRoomID ] = useState(null);
+    const [ roomID,setRoomID ] = useState('');
     const [ playersIn,setPlayersIn ] = useState();
+    const roomData = useRef({});
 
     const updateRoom = async () => {
-        const roomRef = doc(db,"room",roomID.toString());
+        const roomRef = doc(db,"room",roomID);
         try {
             await updateDoc(roomRef,{
                 XsTurn: XsTurn,
@@ -295,9 +296,9 @@ export const GameContext = ({ children }) => {
     },[ XsTurn,bigBox ]);
 
     const createRoom = async (roomID) => {
-        setRoomID(roomID);
-        const dbRef = doc(db,"room",roomID.toString());
-        const roomData = {
+        setRoomID(roomID.toString());
+        const dbRef = doc(db,"room",roomID?.toString());
+        const roomDatas = {
             id: roomID,
             playerOneIn: true,
             playerTwoIn: null,
@@ -316,14 +317,14 @@ export const GameContext = ({ children }) => {
             }
         };
         try {
-            await setDoc(dbRef,roomData);
+            await setDoc(dbRef,roomDatas);
         } catch (error) {
             console.log(error);
         }
     };
 
     const joinRoom = async (roomID) => {
-        setRoomID(roomID);
+        setRoomID(roomID.toString());
         const dbRef = doc(db,"room",roomID.toString());
         try {
             await updateDoc(dbRef,{
@@ -364,6 +365,7 @@ export const GameContext = ({ children }) => {
         isOnlinePlaying,
         createRoom,
         joinRoom,
+        roomData,
         playersIn
     };
     return < gameContext.Provider value={values}> {children}</gameContext.Provider>;
