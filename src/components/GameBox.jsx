@@ -117,20 +117,7 @@ const GameBox = ({ bigBoxValue,id: boxID,resetCell }) => {
     },[ cell ]);
 
     useEffect(() => {
-        // if (isOnlinePlaying) {
-        //     const boxid = `id${boxID}`;
-        //     const roomDbRef = doc(db,"room",roomID?.toString());
-        //     const unsub = onSnapshot(roomDbRef,{ includeMetadataChanges: true },(doc) => {
-        //         const roomDb = doc.data();
-        //         if (roomDb !== undefined) {
-        //             // if (roomDb.playerOne === null || roomDb.playerTwo === null) {
-        //             //     return;
-        //             // } else {
-        //             console.log(roomDb?.smallBox.boxid);
-        //             // }
-        //         }
-        //     });
-        // }
+
     },);
 
     return (
