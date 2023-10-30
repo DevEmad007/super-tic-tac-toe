@@ -1,6 +1,6 @@
 import { createContext,useContext,useRef } from "react";
 import { useState,useEffect } from "react";
-import { getFirestore,doc,setDoc,getDocs,updateDoc,onSnapshot } from "firebase/firestore";
+import { getFirestore,doc,setDoc,updateDoc,onSnapshot } from "firebase/firestore";
 import { useNavigate } from "react-router";
 
 
@@ -23,7 +23,63 @@ export const GameContext = ({ children }) => {
     const [ isOnlinePlaying,setIsOnlinePlaying ] = useState(false);
     const [ roomID,setRoomID ] = useState('');
     const [ playersIn,setPlayersIn ] = useState();
-    const roomData = useRef({});
+    const [ roomData,setRoomData ] = useState();
+
+    const handleOnlinePlay = () => {
+        setIsOnlinePlaying(true);
+        navigate('/game');
+    };
+
+    const createRoom = async (roomID) => {
+        handleOnlinePlay();
+        setRoomID(roomID.toString());
+        const dbRef = doc(db,"room",roomID?.toString());
+        const roomDatas = {
+            id: roomID,
+            playerOneIn: true,
+            playerTwoIn: null,
+            XsTurn: XsTurn,
+            smallBox: {
+                id0: Array(9).fill(null),
+                id1: Array(9).fill(null),
+                id2: Array(9).fill(null),
+                id3: Array(9).fill(null),
+                id4: Array(9).fill(null),
+                id5: Array(9).fill(null),
+                id6: Array(9).fill(null),
+                id7: Array(9).fill(null),
+                id8: Array(9).fill(null),
+            },
+            bigBox: Array(9).fill(null),
+        };
+        setRoomData(roomDatas); //setRoomData to the local Storage
+        try {
+            await setDoc(dbRef,roomDatas);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    console.log(roomData);
+
+    const joinRoom = async (roomID) => {
+        handleOnlinePlay();
+        setRoomID(roomID.toString());
+        const dbRef = doc(db,"room",roomID.toString());
+        try {
+            await updateDoc(dbRef,{
+                'playerTwoIn': true
+            });
+        } catch (error) {
+            console.log(error);
+        }
+        onSnapshot(
+            doc(db,"room",roomID.toString()),
+            { includeMetadataChanges: true },
+            (doc) => {
+                setRoomData(doc.data());
+            });
+    };
 
     const updateRoom = async () => {
         const roomRef = doc(db,"room",roomID);
@@ -281,53 +337,6 @@ export const GameContext = ({ children }) => {
         }
     },[ XsTurn,bigBox ]);
 
-    const createRoom = async (roomID) => {
-        setRoomID(roomID.toString());
-        const dbRef = doc(db,"room",roomID?.toString());
-        const roomDatas = {
-            id: roomID,
-            playerOneIn: true,
-            playerTwoIn: null,
-            XsTurn: XsTurn,
-            bigBox: Array(9).fill(null),
-            smallBox: {
-                id0: Array(9).fill(null),
-                id1: Array(9).fill(null),
-                id2: Array(9).fill(null),
-                id3: Array(9).fill(null),
-                id4: Array(9).fill(null),
-                id5: Array(9).fill(null),
-                id6: Array(9).fill(null),
-                id7: Array(9).fill(null),
-                id8: Array(9).fill(null),
-            }
-        };
-        try {
-            await setDoc(dbRef,roomDatas);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const joinRoom = async (roomID) => {
-        setRoomID(roomID.toString());
-        const dbRef = doc(db,"room",roomID.toString());
-        try {
-            await updateDoc(dbRef,{
-                'playerTwoIn': true
-            });
-            navigate('/game');
-            setIsOnlinePlaying(true);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const handleOnlinePlay = () => {
-        setIsOnlinePlaying(true);
-        navigate('/game');
-    };
-
     const values = {
         bigBox,
         bigBoxID,
@@ -346,9 +355,9 @@ export const GameContext = ({ children }) => {
         setNxtPlayBox,
         handleTwistMode,
         handleNormalMode,
-        handleOnlinePlay,
         roomID,
         isOnlinePlaying,
+        setIsOnlinePlaying,
         createRoom,
         joinRoom,
         roomData,
