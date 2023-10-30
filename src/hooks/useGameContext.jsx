@@ -15,7 +15,7 @@ export const GameContext = ({ children }) => {
     const navigate = useNavigate();
     const [ bigBox,setBigBox ] = useState(Array(9).fill(null));
     const [ XsTurn,setXsTurn ] = useState(true);
-    const [ bigBoxID,setBigBoxID ] = useState();
+    const [ smallBoxID,setSmallBoxID ] = useState();
     const [ modalShow,setModalShow ] = useState(false);
     const [ nxtPlayBox,setNxtPlayBox ] = useState(null);
     const [ winner,setWinner ] = useState(null);
@@ -94,20 +94,18 @@ export const GameContext = ({ children }) => {
     };
 
     const getRoomData = () => {
-        if (isOnlinePlaying) {
-            onSnapshot(
-                doc(db,"room",roomID.toString()),
-                { includeMetadataChanges: true },
-                (doc) => {
-                    setRoomData(doc.data()); //sets room data to local storage
-                });
-        }
+        onSnapshot(
+            doc(db,"room",roomID.toString()),
+            { includeMetadataChanges: true },
+            (doc) => {
+                setRoomData(doc.data()); //sets room data to local storage
+            });
     };
 
     useEffect(() => {
-
-        window.setInterval(getRoomData,5000);
-
+        if (isOnlinePlaying) {
+            window.setInterval(getRoomData,5000);
+        }
         return () => window.clearInterval(getRoomData);
     },[ isOnlinePlaying ]);
 
@@ -147,14 +145,14 @@ export const GameContext = ({ children }) => {
                     //condition is inverted bcz state changes one click behind
                     setBigBox(prev => {
                         const newArray = [ ...prev ];
-                        newArray[ bigBoxID ] = 'X';
+                        newArray[ smallBoxID ] = 'X';
                         return newArray;
                     });
                 }
                 else {
                     setBigBox(prev => {
                         const newArray = [ ...prev ];
-                        newArray[ bigBoxID ] = 'O';
+                        newArray[ smallBoxID ] = 'O';
                         return newArray;
                     });
                 }
@@ -329,7 +327,7 @@ export const GameContext = ({ children }) => {
                 setNxtPlayBox(null);
             }
         }
-        setBigBoxID(boxID);
+        setSmallBoxID(boxID);
         // id of current gameBox
     };
 
@@ -345,7 +343,7 @@ export const GameContext = ({ children }) => {
 
     const CheckBox = (boxID,cellID) => {
         setNxtPlayBox(cellID);
-        setBigBoxID(boxID);
+        setSmallBoxID(boxID);
     };
 
     useEffect(() => {
@@ -371,7 +369,7 @@ export const GameContext = ({ children }) => {
 
     const values = {
         bigBox,
-        bigBoxID,
+        smallBoxID,
         setBigBox,
         XsTurn,
         setXsTurn,

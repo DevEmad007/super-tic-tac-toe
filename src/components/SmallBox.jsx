@@ -10,7 +10,7 @@ const SmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
     const {
         XsTurn,
         setXsTurn,
-        bigBoxID,
+        smallBoxID,
         CheckBox,
         isTwistModeOn,
         CheckBoxTwisted,
@@ -18,7 +18,8 @@ const SmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
         nxtPlayBox,
         roomID,
         playersIn,
-        isOnlinePlaying } = useGameContext();
+        isOnlinePlaying,
+        roomData } = useGameContext();
 
     const updateRoom = async (cellID) => {
         const roomRef = doc(db,"room",roomID.toString());
@@ -79,12 +80,16 @@ const SmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
         //wait for resetCell to change which depends on reset button
     },resetCell);
 
-    const handleClick = (cell,cellID) => {
+    const handleCellClick = (cell,cellID) => {
         if (cell !== null) {
             return;
             // checks if the cell is empty 
         }
-        setXsTurn(!XsTurn);
+        if (isOnlinePlaying) {
+            setXsTurn(!roomData?.XsTurn);
+        } else {
+            setXsTurn(!XsTurn);
+        }
         if (XsTurn) {
             setSmallBox(prev => {
                 const newArray = [ ...prev ];
@@ -102,7 +107,8 @@ const SmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
         // set the value of array depending on player 
         if (isTwistModeOn) {
             CheckBoxTwisted(boxID,cellID);
-        } else {
+        }
+        else {
             CheckBox(boxID,cellID);
         }
         //set next gamebox to to play
@@ -112,13 +118,15 @@ const SmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
         checkWinner(smallBox);
         //check if the gameBox git winner
         if (isOnlinePlaying) {
-            updateRoom(bigBoxID);
+            updateRoom(smallBoxID);
         }
     },[ smallBox ]);
 
     useEffect(() => {
+        if (isOnlinePlaying) {
 
-    },);
+        }
+    },[ roomData ]);
 
     return (
         <div className='gameBox' >
@@ -135,7 +143,7 @@ const SmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
                 smallBox.map(
                     (cell,index) => <Cell
                         key={index}
-                        handleClick={() => handleClick(cell,index)}
+                        handleClick={() => handleCellClick(cell,index)}
                     >
                         {cell}
                     </Cell>
