@@ -1,4 +1,4 @@
-import GameBox from "./GameBox";
+import SmallBox from "./SmallBox";
 import { useState } from 'react';
 import { PlayerOne,PlayerTwo } from "./Cell";
 import InGameModal from "./modals/BootstrapModal";
@@ -57,14 +57,14 @@ const Game = () => {
             <div className="player">
                 <PlayerOne
                     className={'playerone'}
-                    active={!XsTurn}
+                    active={false}
                     fontsize={screenWidth > 600 ? '100px' : '66px'}
                 />
             </div>
             <div className="game">
                 {
                     bigBox.map((value,index) =>
-                        < GameBox
+                        < SmallBox
                             bigBoxValue={value}
                             id={index}
                             resetCell={resetCell}
@@ -72,12 +72,12 @@ const Game = () => {
                         />
                     )
                 }
-                {/* maps out gameBoxes */}
+                {/* maps gameBoxes */}
             </div>
             <div className="player">
                 <PlayerTwo
                     className={'playertwo'}
-                    active={XsTurn}
+                    active={false}
                     fontsize={screenWidth > 600 ? '100px' : '66px'}
                 />
             </div>

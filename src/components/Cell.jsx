@@ -6,7 +6,7 @@ export const PlayerOne = ({ active,fontsize }) => {
 };
 
 export const PlayerTwo = ({ active,fontsize }) => {
-    return <Close sx={{ color: active ? '#c4302b' : 'gray',fontSize: fontsize }} />;
+    return <Close sx={{ color: active ? '#c73866' : 'gray',fontSize: fontsize }} />;
 };
 
 const Cell = ({ children,handleClick }) => {

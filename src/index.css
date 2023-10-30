@@ -26,16 +26,18 @@
 
 .gameboard {
   width: 100%;
-  min-height: 99dvh;
+  min-height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: 500ms ease-in-out;
 }
 
 .game {
   display: grid;
   grid-template-columns: repeat(3,1fr);
   grid-template-rows: repeat(3,1fr);
+  border-radius: 6px;
 }
 
 .gameBox {
@@ -111,6 +113,7 @@
 
 .player {
   margin: 20px;
+  border-radius: 50%;
 }
 
 .resetBtn , .goToHome{

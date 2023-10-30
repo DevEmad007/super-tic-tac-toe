@@ -1,12 +1,12 @@
 import Cell from './Cell';
 import { useState,useEffect } from 'react';
-import useSkipRender from './../hooks/useSkipRender';
+import useSkipRender from '../hooks/useSkipRender';
 import { useGameContext } from '../hooks/useGameContext';
 import { getFirestore,doc,updateDoc,setDoc,getDocs,onSnapshot } from "firebase/firestore";
 
-const GameBox = ({ bigBoxValue,id: boxID,resetCell }) => {
+const SmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
     const db = getFirestore();
-    const [ cell,setCell ] = useState(Array(9).fill(null));
+    const [ smallBox,setSmallBox ] = useState(Array(9).fill(null));
     const {
         XsTurn,
         setXsTurn,
@@ -74,7 +74,7 @@ const GameBox = ({ bigBoxValue,id: boxID,resetCell }) => {
     };
 
     useSkipRender(() => {
-        setCell(Array(9).fill(null));
+        setSmallBox(Array(9).fill(null));
         //skips render 
         //wait for resetCell to change which depends on reset button
     },resetCell);
@@ -86,14 +86,14 @@ const GameBox = ({ bigBoxValue,id: boxID,resetCell }) => {
         }
         setXsTurn(!XsTurn);
         if (XsTurn) {
-            setCell(prev => {
+            setSmallBox(prev => {
                 const newArray = [ ...prev ];
                 newArray[ cellID ] = 'X';
                 return newArray;
             });
         }
         else {
-            setCell(prev => {
+            setSmallBox(prev => {
                 const newArray = [ ...prev ];
                 newArray[ cellID ] = 'O';
                 return newArray;
@@ -109,12 +109,12 @@ const GameBox = ({ bigBoxValue,id: boxID,resetCell }) => {
     };
 
     useEffect(() => {
-        checkWinner(cell);
+        checkWinner(smallBox);
         //check if the gameBox git winner
         if (isOnlinePlaying) {
             updateRoom(bigBoxID);
         }
-    },[ cell ]);
+    },[ smallBox ]);
 
     useEffect(() => {
 
@@ -131,15 +131,19 @@ const GameBox = ({ bigBoxValue,id: boxID,resetCell }) => {
             <div className={`${nxtPlayBox == null ? 'hidden' : nxtPlayBox == boxID ? 'hidden' : 'layer'}`}></div>
             {/* <div className={`${playersIn ? 'hidden' : 'layer'}`}></div> */}
             {/* prevent player from clicking other box then the next play box */}
-            {cell.map((cell,index) => <Cell
-                key={index}
-                handleClick={() => handleClick(cell,index)}
-            >
-                {cell}
-            </Cell>)}
+            {
+                smallBox.map(
+                    (cell,index) => <Cell
+                        key={index}
+                        handleClick={() => handleClick(cell,index)}
+                    >
+                        {cell}
+                    </Cell>
+                )
+            }
             {/* maps out cells of gameBox  */}
         </div>
     );
 };
 
-export default GameBox;
+export default SmallBox;
