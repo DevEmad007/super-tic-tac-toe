@@ -1,11 +1,10 @@
 import React,{ useState } from 'react';
-import { Button,Container,Row,Col,Image } from 'react-bootstrap';
-import { Link,useNavigate } from 'react-router-dom';
+import { Button,Container,Row,Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { useGameContext } from '../hooks/useGameContext';
 import RoomModal from '../components/modals/RoomModal';
 const Home = () => {
     const { handleTwistMode,handleNormalMode } = useGameContext();
-    const navigate = useNavigate();
     const [ isRoomModalOpen,setIsRoomModalOpen ] = useState(false);
 
     const handleOpenModal = () => {
