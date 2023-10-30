@@ -20,7 +20,8 @@ const Game = () => {
         setWinner,
         modalShow,
         setModalShow,
-        setNxtPlayBox
+        setNxtPlayBox,
+        setIsOnlinePlaying
     } = useGameContext();
 
     const handleReset = () => {
@@ -31,6 +32,7 @@ const Game = () => {
         setWinner(null);
         if (isHomeBtnClicked) {
             navigate('/');
+            setIsOnlinePlaying(false);
         }
         setIsHomeBtnClicked(false);
         //closes modal and resets the game 

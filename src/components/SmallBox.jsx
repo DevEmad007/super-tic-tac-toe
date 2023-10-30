@@ -25,47 +25,47 @@ const SmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
         try {
             if (cellID === 0) {
                 await updateDoc(roomRef,{
-                    'smallBox.id0': cell
+                    'smallBox.id0': smallBox
                 });
             }
             else if (cellID == 1) {
                 await updateDoc(roomRef,{
-                    'smallBox.id1': cell
+                    'smallBox.id1': smallBox
                 });
             }
             else if (cellID == 2) {
                 await updateDoc(roomRef,{
-                    'smallBox.id2': cell
+                    'smallBox.id2': smallBox
                 });
             }
             else if (cellID == 3) {
                 await updateDoc(roomRef,{
-                    'smallBox.id3': cell
+                    'smallBox.id3': smallBox
                 });
             }
             else if (cellID == 4) {
                 await updateDoc(roomRef,{
-                    'smallBox.id4': cell
+                    'smallBox.id4': smallBox
                 });
             }
             else if (cellID == 5) {
                 await updateDoc(roomRef,{
-                    'smallBox.id5': cell
+                    'smallBox.id5': smallBox
                 });
             }
             else if (cellID == 6) {
                 await updateDoc(roomRef,{
-                    'smallBox.id6': cell
+                    'smallBox.id6': smallBox
                 });
             }
             else if (cellID == 7) {
                 await updateDoc(roomRef,{
-                    'smallBox.id7': cell
+                    'smallBox.id7': smallBox
                 });
             }
             else if (cellID == 8) {
                 await updateDoc(roomRef,{
-                    'smallBox.id8': cell
+                    'smallBox.id8': smallBox
                 });
             }
         } catch (error) {
