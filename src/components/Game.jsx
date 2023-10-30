@@ -1,7 +1,7 @@
 import SmallBox from "./SmallBox";
 import { useState } from 'react';
 import { PlayerOne,PlayerTwo } from "./Cell";
-import InGameModal from "./modals/BootstrapModal";
+import InGameModal from "./modals/InGameModal";
 import { Button } from "react-bootstrap";
 import { useGameContext } from "../hooks/useGameContext";
 import { useNavigate } from "react-router-dom";

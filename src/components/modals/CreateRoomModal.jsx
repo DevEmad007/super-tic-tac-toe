@@ -7,7 +7,7 @@ import { useState } from 'react';
 import useSkipRender from '../../hooks/useSkipRender';
 
 const CreateRoomModal = ({ show,handleCancel,roomID }) => {
-    const { handleOnlinePlay,createRoom } = useGameContext();
+    const { createRoom } = useGameContext();
     const [ message,setMessage ] = useState('');
 
     useSkipRender(() => {
@@ -16,6 +16,10 @@ const CreateRoomModal = ({ show,handleCancel,roomID }) => {
 
     const handleCopy = () => {
         setMessage('copied!');
+    };
+
+    const handleCreateRoom = () => {
+        createRoom(roomID);
     };
 
     return (
@@ -50,10 +54,7 @@ const CreateRoomModal = ({ show,handleCancel,roomID }) => {
                         <Col>
                             <Button
                                 className="w-100 my-2"
-                                onClick={() => {
-                                    handleOnlinePlay();
-                                    createRoom(roomID);
-                                }}
+                                onClick={handleCreateRoom}
                             >
                                 Enter Game
                             </Button>

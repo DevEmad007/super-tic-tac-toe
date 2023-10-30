@@ -1,3 +1,4 @@
+import { Col,Container,Row } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
@@ -22,10 +23,10 @@ function InGameModal({ isHomeBtnClicked,show,handleReset,handleClose,winner }) {
                     {winner === null ?
                         (
                             <>
-                                <Button variant="secondary" onClick={handleReset}>
+                                <Button variant="danger " onClick={handleReset}>
                                     Yes
                                 </Button>
-                                <Button variant="secondary" onClick={handleClose}>
+                                <Button variant="success" onClick={handleClose}>
                                     No
                                 </Button>
                             </>
