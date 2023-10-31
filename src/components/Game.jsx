@@ -45,7 +45,7 @@ const Game = () => {
     };
 
     return (
-        <>
+        <div style={{ backgroundColor: XsTurn ? '#c4302b' : '#1882FC' }} className={`gameboard`}>
             <Button className="resetBtn" onClick={() => setModalShow(true)}>Reset</Button>
             <InGameModal
                 className='resetModal'
@@ -87,7 +87,7 @@ const Game = () => {
                 setModalShow(true);
                 setIsHomeBtnClicked(true);
             }}>Home</Button>
-        </>
+        </div>
     );
 };
 
