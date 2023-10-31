@@ -3,7 +3,6 @@ import { useState,useEffect } from "react";
 import { getFirestore,doc,setDoc,updateDoc,onSnapshot } from "firebase/firestore";
 import { useNavigate } from "react-router";
 
-
 export const gameContext = createContext();
 
 export const useGameContext = () => {
@@ -16,6 +15,7 @@ export const GameContext = ({ children }) => {
     const [ bigBox,setBigBox ] = useState(Array(9).fill(null));
     const [ XsTurn,setXsTurn ] = useState(true);
     const [ smallBoxID,setSmallBoxID ] = useState();
+    const [ cellid,setCellid ] = useState(null);
     const [ modalShow,setModalShow ] = useState(false);
     const [ nxtPlayBox,setNxtPlayBox ] = useState(null);
     const [ winner,setWinner ] = useState(null);
@@ -98,7 +98,10 @@ export const GameContext = ({ children }) => {
             doc(db,"room",roomID.toString()),
             { includeMetadataChanges: true },
             (doc) => {
+                const data = doc.data();
                 setRoomData(doc.data()); //sets room data to local storage
+                setXsTurn(data.XsTurn);
+                setBigBox(data.bigBox);
             });
     };
 
@@ -113,8 +116,8 @@ export const GameContext = ({ children }) => {
         const roomRef = doc(db,"room",roomID);
         try {
             await updateDoc(roomRef,{
-                XsTurn: XsTurn,
-                bigBox: bigBox
+                XsTurn: roomData?.XsTurn,
+                bigBox: roomData?.bigBox,
             });
         } catch (error) {
             console.log(error);
@@ -144,8 +147,8 @@ export const GameContext = ({ children }) => {
                 if (!XsTurn) {
                     //condition is inverted bcz state changes one click behind
                     setBigBox(prev => {
-                        const newArray = [ ...prev ];
-                        newArray[ smallBoxID ] = 'X';
+                        const newArray = { ...prev };
+                        newArray.bigBox[ smallBoxID ] = 'X';
                         return newArray;
                     });
                 }
@@ -328,7 +331,8 @@ export const GameContext = ({ children }) => {
             }
         }
         setSmallBoxID(boxID);
-        // id of current gameBox
+        setCellid(cellID);
+        // id of current gameBox & cell
     };
 
     const handleTwistMode = () => {
@@ -391,6 +395,7 @@ export const GameContext = ({ children }) => {
         joinRoom,
         roomID,
         roomData,
+        setRoomData,
         playersIn
     };
     return < gameContext.Provider value={values}> {children}</gameContext.Provider>;
