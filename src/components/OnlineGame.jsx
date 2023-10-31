@@ -4,7 +4,8 @@ import { PlayerOne,PlayerTwo } from "./Cell";
 import InGameModal from "./modals/InGameModal";
 import { Button } from "react-bootstrap";
 import { useGameContext } from "../hooks/useGameContext";
-import { useNavigate } from "react-router-dom";;
+import { useNavigate } from "react-router-dom"; import OnlineSmallBox from "./OnlineSmallBox";
+;
 
 const OnlineGame = () => {
     const [ resetCell,setResetCell ] = useState(false);
@@ -67,7 +68,7 @@ const OnlineGame = () => {
             <div className="game">
                 {
                     bigBox.map((value,index) =>
-                        < SmallBox
+                        < OnlineSmallBox
                             bigBoxValue={value}
                             id={index}
                             resetCell={resetCell}
