@@ -15,7 +15,7 @@ export const GameContext = ({ children }) => {
     const navigate = useNavigate();
     const [ bigBox,setBigBox ] = useState(Array(9).fill(null));
     const [ XsTurn,setXsTurn ] = useState(true);
-    const [ smallBoxID,setSmallBoxID ] = useState();
+    const [ smallBoxID,setSmallBoxID ] = useState(null);
     const [ cellid,setCellid ] = useState(null);
     const [ modalShow,setModalShow ] = useState(false);
     const [ nxtPlayBox,setNxtPlayBox ] = useState(null);
@@ -28,7 +28,7 @@ export const GameContext = ({ children }) => {
 
     const handleOnlinePlay = () => {
         setIsOnlinePlaying(true);
-        navigate('/game');
+        navigate('/gameOnline');
     };
 
     const createRoom = async (roomID) => {
@@ -98,7 +98,7 @@ export const GameContext = ({ children }) => {
         }
     };
 
-    console.log(roomData?.XsTurn);
+    console.log(XsTurn);
 
     const lines = [
         [ 0,1,2 ],
@@ -121,8 +121,8 @@ export const GameContext = ({ children }) => {
                 if (!XsTurn) {
                     //condition is inverted bcz state changes one click behind
                     setBigBox(prev => {
-                        const newArray = { ...prev };
-                        newArray.bigBox[ smallBoxID ] = 'X';
+                        const newArray = [ ...prev ];
+                        newArray[ smallBoxID ] = 'X';
                         return newArray;
                     });
                 }
