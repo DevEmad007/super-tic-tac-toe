@@ -8,9 +8,11 @@ const SmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
     const db = getFirestore();
     const [ smallBox,setSmallBox ] = useState(Array(9).fill(null));
     const {
+        setBigBox,
         XsTurn,
         setXsTurn,
         smallBoxID,
+        cellid,
         CheckBox,
         isTwistModeOn,
         CheckBoxTwisted,
@@ -85,11 +87,7 @@ const SmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
             return;
             // checks if the cell is empty 
         }
-        if (isOnlinePlaying) {
-            setXsTurn(!roomData?.XsTurn);
-        } else {
-            setXsTurn(!XsTurn);
-        }
+        setXsTurn(!XsTurn);
         if (XsTurn) {
             setSmallBox(prev => {
                 const newArray = [ ...prev ];
@@ -123,10 +121,17 @@ const SmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
     },[ smallBox ]);
 
     useEffect(() => {
-        if (isOnlinePlaying) {
-
+        if (isOnlinePlaying && roomData !== undefined || null) {
+            // setBigBox(roomData?.bigBox);
+            // if (smallBoxID === 0) {
+            //     setSmallBox(roomData?.smallBox?.id0);
+            // }
+            // else if (smallBoxID === 1) {
+            //     setSmallBox(roomData?.smallBox?.id1);
+            // }
         }
-    },[ roomData ]);
+        console.log('first');
+    },[ XsTurn ]);
 
     return (
         <div className='gameBox' >

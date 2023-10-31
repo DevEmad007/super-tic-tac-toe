@@ -1,7 +1,8 @@
-import { createContext,useContext,useRef } from "react";
+import { createContext,useContext,useMemo,useRef } from "react";
 import { useState,useEffect } from "react";
-import { getFirestore,doc,setDoc,updateDoc,onSnapshot } from "firebase/firestore";
+import { getFirestore,doc,setDoc,updateDoc,onSnapshot,onSnapshotsInSync } from "firebase/firestore";
 import { useNavigate } from "react-router";
+import { getRoomData } from "../API/updateRoom";
 
 export const gameContext = createContext();
 
@@ -24,20 +25,6 @@ export const GameContext = ({ children }) => {
     const [ roomID,setRoomID ] = useState('');
     const [ roomData,setRoomData ] = useState();
     const [ playersIn,setPlayersIn ] = useState();
-
-    if (isOnlinePlaying) {
-        // Convert the object to a JSON string.
-        // const jsonString = JSON.stringify(roomData);
-        // Set the localStorage.setItem() method to store the JSON string in local storage.
-        // localStorage.setItem('roomData',jsonString);
-        // Get the JSON string from local storage.
-        // const getjsonString = localStorage.getItem('roomData');
-        // console.log(getjsonString);
-        // Convert the JSON string to an object.
-        // if (getjsonString) {
-        // const objectFromStorage = JSON.parse(getjsonString);
-        // }
-    }
 
     const handleOnlinePlay = () => {
         setIsOnlinePlaying(true);
@@ -93,38 +80,25 @@ export const GameContext = ({ children }) => {
             });
     };
 
-    const getRoomData = () => {
-        onSnapshot(
-            doc(db,"room",roomID.toString()),
-            { includeMetadataChanges: true },
-            (doc) => {
-                const data = doc.data();
-                setRoomData(doc.data()); //sets room data to local storage
-                setXsTurn(data.XsTurn);
-                setBigBox(data.bigBox);
-            });
-    };
-
-    useEffect(() => {
+    useMemo(() => {
         if (isOnlinePlaying) {
-            window.setInterval(getRoomData,5000);
+            getRoomData(roomID,setRoomData,setXsTurn,setBigBox);
         }
-        return () => window.clearInterval(getRoomData);
     },[ isOnlinePlaying ]);
 
     const updateRoom = async () => {
         const roomRef = doc(db,"room",roomID);
         try {
             await updateDoc(roomRef,{
-                XsTurn: roomData?.XsTurn,
-                bigBox: roomData?.bigBox,
+                XsTurn: XsTurn,
+                bigBox: bigBox,
             });
         } catch (error) {
             console.log(error);
         }
     };
 
-    console.log(roomData);
+    console.log(roomData?.XsTurn);
 
     const lines = [
         [ 0,1,2 ],
@@ -373,7 +347,9 @@ export const GameContext = ({ children }) => {
 
     const values = {
         bigBox,
+        setBigBox,
         smallBoxID,
+        cellid,
         setBigBox,
         XsTurn,
         setXsTurn,
