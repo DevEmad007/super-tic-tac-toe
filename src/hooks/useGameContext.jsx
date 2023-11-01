@@ -52,6 +52,7 @@ export const GameContext = ({ children }) => {
                 id7: Array(9).fill(null),
                 id8: Array(9).fill(null),
             },
+            nxtPlayBox: nxtPlayBox,
             bigBox: Array(9).fill(null),
         };
         setRoomData(roomDatas);
@@ -78,7 +79,7 @@ export const GameContext = ({ children }) => {
 
     useMemo(() => {
         if (isOnlinePlaying) {
-            getRoomData(roomID,setRoomData,setXsTurn);
+            getRoomData(roomID,setRoomData,setXsTurn,setNxtPlayBox);
         }
     },[ isOnlinePlaying,roomID ]);
 
@@ -93,7 +94,8 @@ export const GameContext = ({ children }) => {
         try {
             await updateDoc(roomRef,{
                 XsTurn: XsTurn,
-                bigBox: bigBox
+                bigBox: bigBox,
+                nxtPlayBox: nxtPlayBox,
             });
         } catch (error) {
             console.log(error);
