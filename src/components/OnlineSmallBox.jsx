@@ -9,17 +9,18 @@ const OnlineSmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
     const [ smallBox,setSmallBox ] = useState(Array(9).fill(null));
     // const [ cellID,setCellID ] = useState(null);
     const {
+        bigBox,
         setBigBox,
         XsTurn,
         setXsTurn,
         smallBoxID,
-        cellid,
         CheckBox,
         isTwistModeOn,
         CheckBoxTwisted,
         checkWinner,
         nxtPlayBox,
         roomID,
+        roomData,
         isOnlinePlaying,
     } = useGameContext();
 
@@ -82,7 +83,13 @@ const OnlineSmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
         //wait for resetCell to change which depends on reset button
     },resetCell);
 
-    const setCellValue = (cellID) => {
+    const handleCellClick = (cell,cellID) => {
+        if (cell !== null) {
+            return;
+            // checks if the cell is empty 
+        }
+        setXsTurn(!XsTurn);
+        // setCellID(cellID);
         if (XsTurn) {
             setSmallBox(prev => {
                 const newArray = [ ...prev ];
@@ -97,16 +104,6 @@ const OnlineSmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
                 return newArray;
             });
         }
-    };
-
-    const handleCellClick = (cell,cellID) => {
-        if (cell !== null) {
-            return;
-            // checks if the cell is empty 
-        }
-        setXsTurn(!XsTurn);
-        // setCellID(cellID);
-        setCellValue(cellID);
         // set the value of array depending on player 
         if (isTwistModeOn) {
             CheckBoxTwisted(boxID,cellID);
@@ -120,7 +117,6 @@ const OnlineSmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
     const compareAndMergeArrays = (array1,array2) => {
         // Create an empty array to store the merged array.
         const mergedArray = [];
-
         // Iterate over the arrays and compare the elements at each index.
         for (let i = 0; i < array1.length; i++) {
             // If the elements at the current index are different, then add the element from the second array to the merged array.
@@ -134,26 +130,31 @@ const OnlineSmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
         return mergedArray;
     };
 
-
     useEffect(() => {
-        checkWinner(smallBox);
         //check if the gameBox git winner
         if (isOnlinePlaying) {
             updateRoom(boxID);
+            checkWinner(smallBox);
+        } else {
+            checkWinner(smallBox);
         }
     },[ smallBox ]);
 
     useEffect(() => {
         setSmallBox(() => compareAndMergeArrays(smallBox,bigBoxValue));
+        if (roomData !== undefined) {
+            setBigBox(() => compareAndMergeArrays(bigBox,roomData.bigBox));
+        }
     },bigBoxValue);
-    console.log(bigBoxValue);
-    // console.log(smallBox);
-
+    // console.log(boxID);
+    // console.log(bigBoxValue);
+    // console.table(smallBox);
+    console.log(bigBox);
     return (
         <div className='gameBox' >
-            <div className={`${bigBoxValue == null ? 'hidden' : bigBoxValue == 'X' ? 'X' : 'hidden'}`}></div>
+            <div className={`${bigBox[ boxID ] == null ? 'hidden' : bigBox[ boxID ] == 'X' ? 'X' : 'hidden'}`}></div>
             {/* if X won the gameBox layer */}
-            <div className={`${bigBoxValue == null ? 'hidden' : bigBoxValue == 'O' ? 'O' : 'hidden'}`}>
+            <div className={`${bigBox[ boxID ] == null ? 'hidden' : bigBox[ boxID ] == 'O' ? 'O' : 'hidden'}`}>
                 <div></div>
             </div>
             {/* if "O" won the gameBox layer */}

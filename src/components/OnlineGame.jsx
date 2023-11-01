@@ -15,7 +15,6 @@ const OnlineGame = () => {
     const screenWidth = screen.width;
 
     const {
-        bigBox,
         setBigBox,
         XsTurn,
         winner,
@@ -60,7 +59,6 @@ const OnlineGame = () => {
             newArray.push(smallBosesRef.id6);
             newArray.push(smallBosesRef.id7);
             newArray.push(smallBosesRef.id8);
-            // setBigBox(roomData.bigBox);
         }
         setSmallBoxes(newArray);
     },[ XsTurn ]);

@@ -52,6 +52,7 @@ export const GameContext = ({ children }) => {
                 id7: Array(9).fill(null),
                 id8: Array(9).fill(null),
             },
+            smallBoxID: smallBoxID,
             nxtPlayBox: nxtPlayBox,
             bigBox: Array(9).fill(null),
         };
@@ -79,15 +80,9 @@ export const GameContext = ({ children }) => {
 
     useMemo(() => {
         if (isOnlinePlaying) {
-            getRoomData(roomID,setRoomData,setXsTurn,setNxtPlayBox);
+            getRoomData(roomID,setRoomData,setXsTurn,setNxtPlayBox,setSmallBoxID);
         }
     },[ isOnlinePlaying,roomID ]);
-
-    useEffect(() => {
-        if (roomData !== undefined) {
-            // setBigBox(roomData.bigBox);
-        }
-    },[ XsTurn ]);
 
     const updateRoom = async () => {
         const roomRef = doc(db,"room",roomID);
@@ -95,6 +90,7 @@ export const GameContext = ({ children }) => {
             await updateDoc(roomRef,{
                 XsTurn: XsTurn,
                 bigBox: bigBox,
+                smallBoxID: smallBoxID,
                 nxtPlayBox: nxtPlayBox,
             });
         } catch (error) {
@@ -103,10 +99,10 @@ export const GameContext = ({ children }) => {
     };
 
     useEffect(() => {
-        checkWinner(bigBox);
+        if (!isOnlinePlaying) {
+            checkWinner(bigBox);
+        }
     },[ XsTurn ]);
-
-    // console.log(bigBox);
 
     useEffect(() => {
         if (isOnlinePlaying) {
@@ -126,30 +122,28 @@ export const GameContext = ({ children }) => {
     ];
 
     const checkWinner = (cellData) => {
-        if (cellData === null) {
-            return;
-        }
-        for (let i = 0; i < lines.length; i++) {
-            const [ a,b,c ] = lines[ i ];
-            if (cellData[ a ] && cellData[ a ] === cellData[ b ] && cellData[ a ] === cellData[ c ]) {
-                if (!XsTurn) {
-                    //condition is inverted bcz state changes one click behind
-                    setBigBox(prev => {
-                        const newArray = [ ...prev ];
-                        newArray[ smallBoxID ] = 'X';
-                        return newArray;
-                    });
-                }
-                else {
-                    setBigBox(prev => {
-                        const newArray = [ ...prev ];
-                        newArray[ smallBoxID ] = 'O';
-                        return newArray;
-                    });
+        if (cellData !== null) {
+            for (let i = 0; i < lines.length; i++) {
+                const [ a,b,c ] = lines[ i ];
+                if (cellData[ a ] && cellData[ a ] === cellData[ b ] && cellData[ a ] === cellData[ c ]) {
+                    if (!XsTurn) {
+                        //condition is inverted bcz state changes one click behind
+                        setBigBox(prev => {
+                            const newArray = [ ...prev ];
+                            newArray[ smallBoxID ] = 'X';
+                            return newArray;
+                        });
+                    }
+                    else {
+                        setBigBox(prev => {
+                            const newArray = [ ...prev ];
+                            newArray[ smallBoxID ] = 'O';
+                            return newArray;
+                        });
+                    }
                 }
             }
         }
-        return null;
     };
 
     const CheckBoxTwisted = (boxID,cellID) => {
