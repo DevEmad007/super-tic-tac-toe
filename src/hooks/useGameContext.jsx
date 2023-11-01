@@ -89,7 +89,6 @@ export const GameContext = ({ children }) => {
         try {
             await updateDoc(roomRef,{
                 XsTurn: XsTurn,
-                bigBox: bigBox,
                 smallBoxID: smallBoxID,
                 nxtPlayBox: nxtPlayBox,
             });
@@ -99,16 +98,10 @@ export const GameContext = ({ children }) => {
     };
 
     useEffect(() => {
-        if (!isOnlinePlaying) {
-            checkWinner(bigBox);
-        }
-    },[ XsTurn ]);
-
-    useEffect(() => {
         if (isOnlinePlaying) {
             updateRoom();
         }
-    },[ XsTurn,bigBox ]);
+    },[ XsTurn ]);
 
     const lines = [
         [ 0,1,2 ],
