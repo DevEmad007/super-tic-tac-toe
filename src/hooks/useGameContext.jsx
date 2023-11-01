@@ -354,7 +354,6 @@ export const GameContext = ({ children }) => {
         setBigBox,
         smallBoxID,
         cellid,
-        setBigBox,
         XsTurn,
         setXsTurn,
         nxtPlayBox,
