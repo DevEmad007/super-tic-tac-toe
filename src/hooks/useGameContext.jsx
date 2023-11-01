@@ -3,6 +3,7 @@ import { useState,useEffect } from "react";
 import { getFirestore,doc,setDoc,updateDoc,onSnapshot,onSnapshotsInSync } from "firebase/firestore";
 import { useNavigate } from "react-router";
 import { getRoomData } from "../API/updateRoom";
+import useSkipRender from "./useSkipRender";
 
 export const gameContext = createContext();
 
@@ -53,7 +54,8 @@ export const GameContext = ({ children }) => {
             },
             bigBox: Array(9).fill(null),
         };
-        setRoomData(roomDatas); //setRoomData to the local Storage
+        setRoomData(roomDatas);
+        //setRoomData to the local Storage
         try {
             await setDoc(dbRef,roomDatas);
         } catch (error) {
@@ -72,33 +74,43 @@ export const GameContext = ({ children }) => {
         } catch (error) {
             console.log(error);
         }
-        onSnapshot(
-            doc(db,"room",roomID.toString()),
-            { includeMetadataChanges: true },
-            (doc) => {
-                setRoomData(doc.data()); //sets room data to local storage
-            });
     };
 
     useMemo(() => {
         if (isOnlinePlaying) {
-            getRoomData(roomID,setRoomData,setXsTurn,setBigBox);
+            getRoomData(roomID,setRoomData,setXsTurn);
         }
-    },[ isOnlinePlaying ]);
+    },[ isOnlinePlaying,roomID ]);
+
+    useEffect(() => {
+        if (roomData !== undefined) {
+            // setBigBox(roomData.bigBox);
+        }
+    },[ XsTurn ]);
 
     const updateRoom = async () => {
         const roomRef = doc(db,"room",roomID);
         try {
             await updateDoc(roomRef,{
                 XsTurn: XsTurn,
-                bigBox: bigBox,
+                bigBox: bigBox
             });
         } catch (error) {
             console.log(error);
         }
     };
 
-    console.log(XsTurn);
+    useEffect(() => {
+        checkWinner(bigBox);
+    },[ XsTurn ]);
+
+    // console.log(bigBox);
+
+    useEffect(() => {
+        if (isOnlinePlaying) {
+            updateRoom();
+        }
+    },[ XsTurn,bigBox ]);
 
     const lines = [
         [ 0,1,2 ],
@@ -137,10 +149,6 @@ export const GameContext = ({ children }) => {
         }
         return null;
     };
-
-    useEffect(() => {
-        checkWinner(bigBox);
-    },[ XsTurn ]);
 
     const CheckBoxTwisted = (boxID,cellID) => {
         if (boxID == 4) {
@@ -338,12 +346,6 @@ export const GameContext = ({ children }) => {
             }
         }
     });
-
-    useEffect(() => {
-        if (isOnlinePlaying) {
-            updateRoom();
-        }
-    },[ XsTurn,bigBox ]);
 
     const values = {
         bigBox,

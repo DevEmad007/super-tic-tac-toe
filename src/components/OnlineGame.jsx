@@ -1,13 +1,14 @@
-import SmallBox from "./SmallBox";
-import { useState } from 'react';
+import { useEffect,useState } from 'react';
 import { PlayerOne,PlayerTwo } from "./Cell";
 import InGameModal from "./modals/InGameModal";
 import { Button } from "react-bootstrap";
 import { useGameContext } from "../hooks/useGameContext";
-import { useNavigate } from "react-router-dom"; import OnlineSmallBox from "./OnlineSmallBox";
+import { useNavigate } from "react-router-dom";
+import OnlineSmallBox from "./OnlineSmallBox";
 ;
 
 const OnlineGame = () => {
+    const [ smallBoxes,setSmallBoxes ] = useState(Array(9).fill(Array(9).fill(null)));
     const [ resetCell,setResetCell ] = useState(false);
     const [ isHomeBtnClicked,setIsHomeBtnClicked ] = useState(false);
     const navigate = useNavigate();
@@ -22,7 +23,8 @@ const OnlineGame = () => {
         modalShow,
         setModalShow,
         setNxtPlayBox,
-        setIsOnlinePlaying
+        setIsOnlinePlaying,
+        roomData,
     } = useGameContext();
 
     const handleReset = () => {
@@ -44,6 +46,27 @@ const OnlineGame = () => {
         setIsHomeBtnClicked(false);
         //closes modal without reset
     };
+
+    useEffect(() => {
+        let newArray = [];
+        if (roomData !== undefined || null) {
+            const smallBosesRef = roomData.smallBox;
+            newArray.push(smallBosesRef.id0);
+            newArray.push(smallBosesRef.id1);
+            newArray.push(smallBosesRef.id2);
+            newArray.push(smallBosesRef.id3);
+            newArray.push(smallBosesRef.id4);
+            newArray.push(smallBosesRef.id5);
+            newArray.push(smallBosesRef.id6);
+            newArray.push(smallBosesRef.id7);
+            newArray.push(smallBosesRef.id8);
+            // setBigBox(roomData.bigBox);
+        }
+        setSmallBoxes(newArray);
+    },[ XsTurn ]);
+
+    // console.log(smallBoxes);
+    // console.log(roomData);
 
     return (
         <div style={{ backgroundColor: XsTurn ? '#c4302b' : '#1882FC' }} className={`gameboard`}>
@@ -67,7 +90,7 @@ const OnlineGame = () => {
             </div>
             <div className="game">
                 {
-                    bigBox.map((value,index) =>
+                    smallBoxes.map((value,index) =>
                         < OnlineSmallBox
                             bigBoxValue={value}
                             id={index}

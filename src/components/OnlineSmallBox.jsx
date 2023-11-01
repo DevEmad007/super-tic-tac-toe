@@ -2,12 +2,12 @@ import Cell from './Cell';
 import { useState,useEffect } from 'react';
 import useSkipRender from '../hooks/useSkipRender';
 import { useGameContext } from '../hooks/useGameContext';
-import { getFirestore,doc,updateDoc,setDoc,getDocs,onSnapshot } from "firebase/firestore";
-import { updateSmallBox } from '../API/updateRoom';
+import { getFirestore,doc,updateDoc } from "firebase/firestore";
 
 const OnlineSmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
     const db = getFirestore();
     const [ smallBox,setSmallBox ] = useState(Array(9).fill(null));
+    // const [ cellID,setCellID ] = useState(null);
     const {
         setBigBox,
         XsTurn,
@@ -20,9 +20,8 @@ const OnlineSmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
         checkWinner,
         nxtPlayBox,
         roomID,
-        playersIn,
         isOnlinePlaying,
-        roomData } = useGameContext();
+    } = useGameContext();
 
     const updateRoom = async (cellID) => {
         const roomRef = doc(db,"room",roomID.toString());
@@ -83,12 +82,7 @@ const OnlineSmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
         //wait for resetCell to change which depends on reset button
     },resetCell);
 
-    const handleCellClick = (cell,cellID) => {
-        if (cell !== null) {
-            return;
-            // checks if the cell is empty 
-        }
-        setXsTurn(!XsTurn);
+    const setCellValue = (cellID) => {
         if (XsTurn) {
             setSmallBox(prev => {
                 const newArray = [ ...prev ];
@@ -103,6 +97,16 @@ const OnlineSmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
                 return newArray;
             });
         }
+    };
+
+    const handleCellClick = (cell,cellID) => {
+        if (cell !== null) {
+            return;
+            // checks if the cell is empty 
+        }
+        setXsTurn(!XsTurn);
+        // setCellID(cellID);
+        setCellValue(cellID);
         // set the value of array depending on player 
         if (isTwistModeOn) {
             CheckBoxTwisted(boxID,cellID);
@@ -113,6 +117,24 @@ const OnlineSmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
         //set next gamebox to to play
     };
 
+    const compareAndMergeArrays = (array1,array2) => {
+        // Create an empty array to store the merged array.
+        const mergedArray = [];
+
+        // Iterate over the arrays and compare the elements at each index.
+        for (let i = 0; i < array1.length; i++) {
+            // If the elements at the current index are different, then add the element from the second array to the merged array.
+            if (array1[ i ] && array2[ i ] === null) {
+                mergedArray.push(array1[ i ]);
+            } else {
+                mergedArray.push(array2[ i ]);
+            }
+        }
+        // Return the merged array.
+        return mergedArray;
+    };
+
+
     useEffect(() => {
         checkWinner(smallBox);
         //check if the gameBox git winner
@@ -121,9 +143,11 @@ const OnlineSmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
         }
     },[ smallBox ]);
 
-    useSkipRender(() => {
-        // updateSmallBox(boxID,setSmallBox)
-    },[ XsTurn ]);
+    useEffect(() => {
+        setSmallBox(() => compareAndMergeArrays(smallBox,bigBoxValue));
+    },bigBoxValue);
+    console.log(bigBoxValue);
+    // console.log(smallBox);
 
     return (
         <div className='gameBox' >
