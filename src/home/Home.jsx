@@ -38,7 +38,7 @@ const Home = () => {
                 </Row>
                 <Row>
                     <Col>
-                        <Button onClick={handleOpenModal} variant='primary' className='m-3 '>Play Online</Button>
+                        <Button onClick={handleOpenModal} variant='primary' className='m-3 '>Tic-Tac-Toe Online</Button>
                     </Col>
                 </Row>
                 <Row>
