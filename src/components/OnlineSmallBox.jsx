@@ -7,7 +7,7 @@ import { getFirestore,doc,updateDoc } from "firebase/firestore";
 const OnlineSmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
     const db = getFirestore();
     const [ smallBox,setSmallBox ] = useState(Array(9).fill(null));
-    // const [ cellID,setCellID ] = useState(null);
+    const [ cellID,setCellID ] = useState(null);
     const {
         player,
         bigBox,
@@ -89,7 +89,7 @@ const OnlineSmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
             // checks if the cell is empty 
         }
         setXsTurn(!XsTurn);
-        // setCellID(cellID);
+        setCellID(cellID);
         if (XsTurn) {
             setSmallBox(prev => {
                 const newArray = [ ...prev ];
@@ -133,11 +133,11 @@ const OnlineSmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
     useEffect(() => {
         //check if the gameBox git winner
         updateRoom(boxID);
-    },[ smallBox ]);
+    },[ smallBox,bigBoxValue ]);
 
     useEffect(() => {
         checkWinner(smallBox);
-    },[ bigBoxValue ]);
+    },[ cellID,bigBoxValue,nxtPlayBox,smallBoxID ]);
 
     useEffect(() => {
         setSmallBox(() => compareAndMergeArrays(smallBox,bigBoxValue));
@@ -159,7 +159,7 @@ const OnlineSmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
             {/* if "O" won the gameBox layer */}
             <div className={`${nxtPlayBox == null ? 'hidden' : nxtPlayBox == boxID ? 'hidden' : 'layer'}`}></div>
 
-            <div className={`${XsTurn && player === "X" ? 'hidden' : !XsTurn && player === "O" ? 'hidden' : 'layer'}`}></div>
+            <div style={{ backgroundColor: 'transparent' }} className={`${XsTurn && player === "X" ? 'hidden' : !XsTurn && player === "O" ? 'hidden' : 'layer'}`}></div>
             {/* prevent player from clicking other box then the next play box */}
             {
                 smallBox.map(
