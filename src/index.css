@@ -5,6 +5,11 @@
   padding: 0;
   box-sizing: border-box;
   font-family:  system-ui, Avenir, Helvetica, Arial, sans-serif;
+  -webkit-tap-highlight-color: transparent; /* Safari/Chrome */
+  -webkit-user-select: none; /* disables text selection*/
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 #root {
@@ -247,5 +252,89 @@
     inset: 3px;
     background-color: rgba(240, 248, 255, 0.199);
     z-index: 20;
+  }
+
+  .gameBoxTTT{
+    width: 100%;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows:  50%  25% 25%;
+    padding: 18px;
+  }
+
+  .gameBoxTTT > .gameBox {
+    position: relative;
+    min-width: 290px;
+    max-width: 490px;
+    min-height: 290px;
+    max-height: 490px;
+    aspect-ratio: 1;
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-template-rows: repeat(3,1fr);
+    border-radius: 12px;
+  }
+
+  .cellT {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .cell1, .cell4, .cell7 {
+    border-left:  2px solid rgba(88, 88, 88, 0.973);
+    border-right:  2px solid rgba(88, 88, 88, 0.973);
+  }
+
+  .cell3, .cell5, .cell4{
+    border-top:  2px solid rgba(88, 88, 88, 0.973);
+    border-bottom:  2px solid rgba(88, 88, 88, 0.973);
+  }
+
+  .cell0, .cell3 , .cell6 {
+    margin-left: 10px;
+  }
+
+  .cell2, .cell5 , .cell8 {
+    margin-right: 10px;
+  }
+
+  .cell0, .cell1 , .cell2 {
+    margin-top: 10px;
+  }
+
+  .cell8, .cell7 , .cell6 {
+    margin-bottom: 10px;
+  }
+
+  .gameBoxTTT > .gameBtns ,
+  .gameBoxTTT > .playerIndicator{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+
+  .gameBoxTTT > .gameBtns {
+    align-items: flex-start;
+    justify-content: space-evenly;
+  }
+
+  .oneT {
+    animation: popIcon 2s infinite;
+  }
+
+  @keyframes popIcon {
+    0%{
+      transform: scale(1);
+    }
+    50%{
+      transform: scale(1.1);
+    }
+    100%{
+      transform: scale(1);
+    }
   }
 }
