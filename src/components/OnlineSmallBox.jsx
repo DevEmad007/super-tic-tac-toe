@@ -9,6 +9,7 @@ const OnlineSmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
     const [ smallBox,setSmallBox ] = useState(Array(9).fill(null));
     // const [ cellID,setCellID ] = useState(null);
     const {
+        player,
         bigBox,
         setBigBox,
         XsTurn,
@@ -21,7 +22,6 @@ const OnlineSmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
         nxtPlayBox,
         roomID,
         roomData,
-        isOnlinePlaying,
     } = useGameContext();
 
     const updateRoom = async (cellID) => {
@@ -132,20 +132,19 @@ const OnlineSmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
 
     useEffect(() => {
         //check if the gameBox git winner
-        if (isOnlinePlaying) {
-            updateRoom(boxID);
-            checkWinner(smallBox);
-        } else {
-            checkWinner(smallBox);
-        }
+        updateRoom(boxID);
     },[ smallBox ]);
+
+    useEffect(() => {
+        checkWinner(smallBox);
+    },[ bigBoxValue ]);
 
     useEffect(() => {
         setSmallBox(() => compareAndMergeArrays(smallBox,bigBoxValue));
         if (roomData !== undefined) {
             setBigBox(() => compareAndMergeArrays(bigBox,roomData.bigBox));
         }
-    },bigBoxValue);
+    },[ bigBoxValue,nxtPlayBox ]);
     // console.log(boxID);
     // console.log(bigBoxValue);
     // console.table(smallBox);
@@ -159,7 +158,8 @@ const OnlineSmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
             </div>
             {/* if "O" won the gameBox layer */}
             <div className={`${nxtPlayBox == null ? 'hidden' : nxtPlayBox == boxID ? 'hidden' : 'layer'}`}></div>
-            {/* <div className={`${playersIn ? 'hidden' : 'layer'}`}></div> */}
+
+            <div className={`${XsTurn && player === "X" ? 'hidden' : !XsTurn && player === "O" ? 'hidden' : 'layer'}`}></div>
             {/* prevent player from clicking other box then the next play box */}
             {
                 smallBox.map(

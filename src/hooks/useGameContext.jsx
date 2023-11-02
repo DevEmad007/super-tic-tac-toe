@@ -26,6 +26,7 @@ export const GameContext = ({ children }) => {
     const [ roomID,setRoomID ] = useState('');
     const [ roomData,setRoomData ] = useState();
     const [ playersIn,setPlayersIn ] = useState();
+    const [ player,setPlayer ] = useState(null);
 
     const handleOnlinePlay = () => {
         setIsOnlinePlaying(true);
@@ -56,6 +57,7 @@ export const GameContext = ({ children }) => {
             nxtPlayBox: nxtPlayBox,
             bigBox: Array(9).fill(null),
         };
+        setPlayer("X");
         setRoomData(roomDatas);
         //setRoomData to the local Storage
         try {
@@ -68,10 +70,11 @@ export const GameContext = ({ children }) => {
     const joinRoom = async (roomID) => {
         handleOnlinePlay();
         setRoomID(roomID.toString());
+        setPlayer("O");
         const dbRef = doc(db,"room",roomID.toString());
         try {
             await updateDoc(dbRef,{
-                'playerTwoIn': true
+                'playerTwoIn': true,
             });
         } catch (error) {
             console.log(error);
@@ -89,6 +92,7 @@ export const GameContext = ({ children }) => {
         try {
             await updateDoc(roomRef,{
                 XsTurn: XsTurn,
+                bigBox: bigBox,
                 smallBoxID: smallBoxID,
                 nxtPlayBox: nxtPlayBox,
             });
@@ -101,7 +105,7 @@ export const GameContext = ({ children }) => {
         if (isOnlinePlaying) {
             updateRoom();
         }
-    },[ XsTurn ]);
+    },[ XsTurn,nxtPlayBox ]);
 
     const lines = [
         [ 0,1,2 ],
@@ -337,6 +341,7 @@ export const GameContext = ({ children }) => {
     });
 
     const values = {
+        player,
         bigBox,
         setBigBox,
         smallBoxID,

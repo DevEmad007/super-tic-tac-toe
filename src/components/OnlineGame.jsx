@@ -5,7 +5,6 @@ import { Button } from "react-bootstrap";
 import { useGameContext } from "../hooks/useGameContext";
 import { useNavigate } from "react-router-dom";
 import OnlineSmallBox from "./OnlineSmallBox";
-;
 
 const OnlineGame = () => {
     const [ smallBoxes,setSmallBoxes ] = useState(Array(9).fill(Array(9).fill(null)));
@@ -15,6 +14,7 @@ const OnlineGame = () => {
     const screenWidth = screen.width;
 
     const {
+        player,
         setBigBox,
         XsTurn,
         winner,
@@ -67,9 +67,7 @@ const OnlineGame = () => {
     // console.log(roomData);
 
     return (
-        <div style={{ backgroundColor: XsTurn ? '#c4302b' : '#1882FC' }} className={`gameboard`}>
-
-            <Button className="resetBtn" onClick={() => setModalShow(true)}>Reset</Button>
+        <div className={`gameboard`}>
             <InGameModal
                 className='resetModal'
                 winner={winner}
@@ -80,11 +78,7 @@ const OnlineGame = () => {
                 onHide={() => setModalShow(false)}
             />
             <div className="player">
-                <PlayerOne
-                    className={'playerone'}
-                    active={false}
-                    fontsize={screenWidth > 600 ? '100px' : '66px'}
-                />
+
             </div>
             <div className="game">
                 {
@@ -99,12 +93,22 @@ const OnlineGame = () => {
                 }
                 {/* maps gameBoxes */}
             </div>
-            <div className="player">
-                <PlayerTwo
-                    className={'playertwo'}
-                    active={false}
-                    fontsize={screenWidth > 600 ? '100px' : '66px'}
-                />
+            <div style={{ backgroundColor: "white" }} className="player">
+                {
+                    player === "X" ?
+                        <PlayerTwo
+                            className={'playertwo'}
+                            active={XsTurn}
+                            fontsize={screenWidth > 600 ? '100px' : '66px'}
+                        />
+                        :
+                        <PlayerOne
+                            className={'playerone'}
+                            active={!XsTurn}
+                            fontsize={screenWidth > 600 ? '100px' : '66px'}
+                        />
+                }
+
             </div>
             <Button className="goToHome" onClick={() => {
                 setModalShow(true);
