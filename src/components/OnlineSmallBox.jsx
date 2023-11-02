@@ -6,7 +6,7 @@ import { getFirestore,doc,updateDoc } from "firebase/firestore";
 
 const OnlineSmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
     const db = getFirestore();
-    const [ smallBox,setSmallBox ] = useState(Array(9).fill(null));
+    const [ smallBox,setSmallBox ] = useState(bigBoxValue);
     const [ cellID,setCellID ] = useState(null);
     const {
         player,
@@ -15,6 +15,7 @@ const OnlineSmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
         XsTurn,
         setXsTurn,
         smallBoxID,
+        cellid,
         CheckBox,
         isTwistModeOn,
         CheckBoxTwisted,
@@ -133,11 +134,45 @@ const OnlineSmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
     useEffect(() => {
         //check if the gameBox git winner
         updateRoom(boxID);
-    },[ smallBox,bigBoxValue ]);
+
+
+    },[ smallBox ]);
 
     useEffect(() => {
-        checkWinner(smallBox);
-    },[ cellID,bigBoxValue,nxtPlayBox,smallBoxID ]);
+        const lines = [
+            [ 0,1,2 ],
+            [ 3,4,5 ],
+            [ 6,7,8 ],
+            [ 0,3,6 ],
+            [ 1,4,7 ],
+            [ 2,5,8 ],
+            [ 0,4,8 ],
+            [ 2,4,6 ],
+        ];
+
+        if (smallBox !== null) {
+            for (let i = 0; i < lines.length; i++) {
+                const [ a,b,c ] = lines[ i ];
+                if (smallBox[ a ] && smallBox[ a ] === smallBox[ b ] && smallBox[ a ] === smallBox[ c ]) {
+                    if (!XsTurn) {
+                        //condition is inverted bcz state changes one click behind
+                        setBigBox(prev => {
+                            const newArray = [ ...prev ];
+                            newArray[ smallBoxID ] = 'X';
+                            return newArray;
+                        });
+                    }
+                    else {
+                        setBigBox(prev => {
+                            const newArray = [ ...prev ];
+                            newArray[ smallBoxID ] = 'O';
+                            return newArray;
+                        });
+                    }
+                }
+            }
+        }
+    },[ cellid,bigBoxValue,nxtPlayBox,cellID,XsTurn ]);
 
     useEffect(() => {
         setSmallBox(() => compareAndMergeArrays(smallBox,bigBoxValue));
@@ -148,7 +183,7 @@ const OnlineSmallBox = ({ bigBoxValue,id: boxID,resetCell }) => {
     // console.log(boxID);
     // console.log(bigBoxValue);
     // console.table(smallBox);
-    console.log(bigBox);
+    // console.log(bigBox);
     return (
         <div className='gameBox' >
             <div className={`${bigBox[ boxID ] == null ? 'hidden' : bigBox[ boxID ] == 'X' ? 'X' : 'hidden'}`}></div>

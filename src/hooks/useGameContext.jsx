@@ -21,6 +21,7 @@ export const GameContext = ({ children }) => {
     const [ modalShow,setModalShow ] = useState(false);
     const [ nxtPlayBox,setNxtPlayBox ] = useState(null);
     const [ winner,setWinner ] = useState(null);
+    const [ isDraw,setIsDraw ] = useState(false);
     const [ isTwistModeOn,setIsTwistModeOn ] = useState(false);
     const [ isOnlinePlaying,setIsOnlinePlaying ] = useState(false);
     const [ roomID,setRoomID ] = useState('');
@@ -30,7 +31,7 @@ export const GameContext = ({ children }) => {
 
     const handleOnlinePlay = () => {
         setIsOnlinePlaying(true);
-        navigate('/gameOnline');
+        navigate('/gameOnlineT');
     };
 
     const createRoom = async (roomID) => {
@@ -54,8 +55,10 @@ export const GameContext = ({ children }) => {
                 id8: Array(9).fill(null),
             },
             smallBoxID: smallBoxID,
+            cellid: cellid,
             nxtPlayBox: nxtPlayBox,
             bigBox: Array(9).fill(null),
+            isReset: true,
         };
         setPlayer("X");
         setRoomData(roomDatas);
@@ -83,7 +86,7 @@ export const GameContext = ({ children }) => {
 
     useMemo(() => {
         if (isOnlinePlaying) {
-            getRoomData(roomID,setRoomData,setXsTurn,setNxtPlayBox,setSmallBoxID);
+            getRoomData(roomID,setRoomData,setXsTurn,setNxtPlayBox,setSmallBoxID,setCellid);
         }
     },[ isOnlinePlaying,roomID ]);
 
@@ -95,6 +98,7 @@ export const GameContext = ({ children }) => {
                 bigBox: bigBox,
                 smallBoxID: smallBoxID,
                 nxtPlayBox: nxtPlayBox,
+                cellid: cellid,
             });
         } catch (error) {
             console.log(error);
@@ -105,7 +109,7 @@ export const GameContext = ({ children }) => {
         if (isOnlinePlaying) {
             updateRoom();
         }
-    },[ XsTurn,nxtPlayBox ]);
+    },[ XsTurn,nxtPlayBox,cellid ]);
 
     const lines = [
         [ 0,1,2 ],
@@ -323,6 +327,7 @@ export const GameContext = ({ children }) => {
     const CheckBox = (boxID,cellID) => {
         setNxtPlayBox(cellID);
         setSmallBoxID(boxID);
+        setCellid(cellID);
     };
 
     useEffect(() => {
@@ -338,6 +343,10 @@ export const GameContext = ({ children }) => {
                 }
             }
         }
+        if (bigBox.filter(i => i == null).length < 1) {
+            setModalShow(true);
+            setIsDraw(true);
+        };
     });
 
     const values = {
@@ -352,6 +361,8 @@ export const GameContext = ({ children }) => {
         checkWinner,
         winner,
         setWinner,
+        isDraw,
+        setIsDraw,
         CheckBox,
         isTwistModeOn,
         CheckBoxTwisted,

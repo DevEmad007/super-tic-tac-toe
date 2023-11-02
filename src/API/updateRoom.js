@@ -1,6 +1,6 @@
 import { getFirestore,doc,onSnapshot } from "firebase/firestore";
 
-export const getRoomData = (roomID,setRoomData,setXsTurn,setNxtPlayBox,setSmallBoxID) => {
+export const getRoomData = (roomID,setRoomData,setXsTurn,setNxtPlayBox,setSmallBoxID,setCellid) => {
     const db = getFirestore();
     onSnapshot(
         doc(db,"room",roomID.toString()),
@@ -11,5 +11,6 @@ export const getRoomData = (roomID,setRoomData,setXsTurn,setNxtPlayBox,setSmallB
             setXsTurn(data.XsTurn);
             setNxtPlayBox(data.nxtPlayBox);
             setSmallBoxID(data.smallBoxID);
+            setCellid(data.cellid);
         });
 };

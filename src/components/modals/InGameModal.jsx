@@ -2,7 +2,7 @@ import { Col,Container,Row } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-function InGameModal({ isHomeBtnClicked,show,handleReset,handleClose,winner }) {
+function InGameModal({ isHomeBtnClicked,show,handleReset,handleClose,winner,isDraw }) {
     const screenWidth = screen.width;
     return (
         <>
@@ -16,7 +16,8 @@ function InGameModal({ isHomeBtnClicked,show,handleReset,handleClose,winner }) {
                 <Modal.Header>
                     <Modal.Title>
                         {isHomeBtnClicked ? `Quit Game? ` :
-                            winner !== null ? `${winner}'s winner` : `Reset Game?`}
+                            isDraw ? 'Game Is Draw ' :
+                                winner !== null ? `${winner}'s winner` : `Reset Game?`}
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Footer>
