@@ -1,24 +1,70 @@
-import { Close,CloseOutlined } from '@mui/icons-material';
-import { Button,Input,Box,Typography,Modal,ButtonBase } from '@mui/material';
-import React,{ useState } from 'react';
+import { Close } from '@mui/icons-material';
+import { ButtonBase } from '@mui/material';
+import React,{ useEffect,useMemo,useState } from 'react';
 import { useGameContext } from '../../hooks/useGameContext';
+import { getFirestore,doc,setDoc,updateDoc,onSnapshot,onSnapshotsInSync,arrayUnion } from "firebase/firestore";
+import { getChatData } from '../../API/updateRoom';
+import useSkipRender from '../../hooks/useSkipRender';
 
 const ChatModal = ({ show,hideChatModal }) => {
-    const [ sentMessage,setSentMessage ] = useState('');
+    const db = getFirestore();
     const {
         player,
         roomID,
-        roomData,
-        setIsOnlinePlaying,
     } = useGameContext();
+    const roomRef = doc(db,"roomChat",roomID);
+    const [ chats,setChats ] = useState([]);
+    const [ chatsData,setChatsData ] = useState([]);
+    const [ chatDetail,setChatDetail ] = useState({
+        from: player,
+        text: '',
+    });
 
     const handleChange = (e) => {
-        setSentMessage(e.target.value);
+        setChatDetail({
+            ...chatDetail,
+            text: e.target.value
+        });
     };
 
-    const handleSent = () => {
-
+    const handleSent = async () => {
+        setChats([ ...chats,chatDetail ]);
+        const data = {
+            chats: [ chatDetail ]
+        };
+        try {
+            await updateDoc(roomRef,{
+                chats: arrayUnion(chatDetail)
+            });
+        } catch (error) {
+            console.log(error);
+            try {
+                setDoc(roomRef,data);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        setChatDetail({
+            ...chatDetail,
+            text: ''
+        });
     };
+
+    useMemo(() => {
+        if (roomID !== '' || undefined) {
+            getChatData(roomID,setChatsData);
+        }
+    },[ roomID ]);
+
+    useSkipRender(() => {
+        setChats(() => {
+            if (chats.length > chatsData.length) {
+                return chats;
+            } else {
+                return chatsData;
+            }
+        });
+    },[ chatsData ]);
 
     return (
         <div
@@ -34,28 +80,22 @@ const ChatModal = ({ show,hideChatModal }) => {
             </div>
             <div className='chatContainer'>
                 <ul>
-                    <li>sdnv</li>
-                    <li className='chatRight'>sdnv</li>
-                    <li>sdnv</li>
-                    <li>sdnv</li>
-                    <li>sdnv</li>
-                    <li>sdnv</li>
-                    <li>sdnv</li>
-                    <li>sdnv</li>
-                    <li>sdnv</li>
-                    <li>sdnv</li>
-                    <li>sdnv</li>
-                    <li>sdnv</li>
-                    <li>sdnv</li>
-                    <li>sdnv</li>
-                    <li>sdnv</li>
-                    <li>sdnv</li>
+                    {
+                        chats?.length >= 1 &&
+                        chats.map((e,i) => (
+                            <li key={i} className={`${e?.from === player ? 'chatRight' : 'chatLeft'}`} >
+                                {e?.text}
+                            </li>
+                        ))
+                    }
                 </ul>
             </div>
             <div className={` inputContainer ${show ? 'showInput' : 'hideInput'}`}>
                 <input
-                    value={sentMessage}
+                    name='input'
+                    value={chatDetail.text}
                     onChange={(e) => handleChange(e)}
+                    placeholder='Send a Message'
                     type="text"
                 />
                 <ButtonBase

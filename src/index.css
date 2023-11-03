@@ -343,8 +343,8 @@
     padding: 20px;
     display: grid;
     grid-template-rows: 12% 78% 10%;
-    background-color: rgba(163, 163, 163, 0.286);
-    /* backdrop-filter: blur(0.01rem); */
+    background-color: rgba(61, 60, 60, 0.267);
+    backdrop-filter: blur(0.01rem);
     z-index: 50;
     transition: 300ms;
   }
@@ -367,7 +367,7 @@
   }
 
   .chatModal .chatHeader {
-    background-color: rgba(137, 135, 135, 0.737);
+    background-color: rgba(137, 135, 135, 0.382);
     padding:6px;
     color: white;
     border-radius: 10px;
@@ -375,29 +375,33 @@
 
   .chatModal .chatContainer{
     overflow-y: scroll;
+    padding: 10px 4px;
   }
   .chatModal .chatContainer ul {
     list-style: none;
     display: flex;
     flex-direction: column;
+    justify-content: flex-end;
+    transition: 300ms;
   }
 
   .chatLeft{
     align-self: flex-start;
+    background-color: #0050c8;
   }
-
+  
   .chatRight {
+    background-color: #23d70b;
     align-self: flex-end;
   }
     
   .chatModal .chatContainer li{
     max-width: fit-content;
-    background-color: #0B5ED7;
     margin:  4px;
     margin-left: -30px;
-    padding: 2px 10px;
+    padding:1px 16px;
     border-radius: 28px;
-    font-size: 18px;
+    font-size: 19px;
     font-weight: 400;
     color: white;
   }

@@ -14,3 +14,16 @@ export const getRoomData = (roomID,setRoomData,setXsTurn,setNxtPlayBox,setSmallB
             setCellid(data.cellid);
         });
 };
+
+export const getChatData = (roomID,setChatsData) => {
+    const db = getFirestore();
+    onSnapshot(
+        doc(db,"roomChat",roomID),
+        { includeMetadataChanges: true },
+        (doc) => {
+            const data = doc.data();
+            if (data !== undefined) {
+                setChatsData(data.chats);
+            }
+        });
+};
