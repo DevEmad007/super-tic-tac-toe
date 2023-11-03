@@ -175,6 +175,189 @@
   border-radius: 50%;
 }
 
+.gameBoxTTT{
+  width: 100%;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows:  50%  25% 25%;
+  padding: 18px;
+}
+
+.gameBoxTTT > .gameBox {
+  position: relative;
+  min-width: 290px;
+  max-width: 490px;
+  min-height: 290px;
+  max-height: 490px;
+  aspect-ratio: 1;
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  grid-template-rows: repeat(3,1fr);
+  border-radius: 12px;
+}
+
+.cellT {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.cell1, .cell4, .cell7 {
+  border-left:  2px solid rgba(88, 88, 88, 0.973);
+  border-right:  2px solid rgba(88, 88, 88, 0.973);
+}
+
+.cell3, .cell5, .cell4{
+  border-top:  2px solid rgba(88, 88, 88, 0.973);
+  border-bottom:  2px solid rgba(88, 88, 88, 0.973);
+}
+
+.cell0, .cell3 , .cell6 {
+  margin-left: 10px;
+}
+
+.cell2, .cell5 , .cell8 {
+  margin-right: 10px;
+}
+
+.cell0, .cell1 , .cell2 {
+  margin-top: 10px;
+}
+
+.cell8, .cell7 , .cell6 {
+  margin-bottom: 10px;
+}
+
+.gameBoxTTT > .gameBtns ,
+.gameBoxTTT > .playerIndicator{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gameBoxTTT > .gameBtns {
+  align-items: flex-start;
+  justify-content: space-evenly;
+}
+
+.oneT {
+  animation: popIcon 2s infinite;
+}
+
+@keyframes popIcon {
+  0%{
+    transform: scale(1);
+  }
+  50%{
+    transform: scale(1.1);
+  }
+  100%{
+    transform: scale(1);
+  }
+}
+
+
+.chatModal {
+  position: absolute;
+  padding: 20px;
+  display: grid;
+  grid-template-rows: 12% 78% 10%;
+  background-color: rgba(61, 60, 60, 0.267);
+  backdrop-filter: blur(0.06rem);
+  z-index: 50;
+  transition:all 300ms;
+}
+
+.showChatModal {
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 50%;
+}
+
+.hideChatModal {
+  bottom: 24px;
+  right: 24px;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+  
+}
+
+.chatModal .chatHeader {
+  background-color: rgba(137, 135, 135, 0.382);
+  padding:6px;
+  color: white;
+  border-radius: 10px;
+}
+
+.chatModal .chatContainer{
+  overflow-y: scroll;
+  padding: 10px 4px;
+}
+.chatModal .chatContainer ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  transition: 300ms;
+}
+
+.chatLeft{
+  align-self: flex-start;
+  background-color: #1b62cc;
+}
+
+.chatRight {
+  background-color: #23d70b;
+  align-self: flex-end;
+}
+  
+.chatModal .chatContainer li{
+  transition: 300ms;
+  max-width: fit-content;
+  margin:  4px;
+  margin-left: -30px;
+  padding:1px 16px;
+  border-radius: 28px;
+  font-size: 19px;
+  font-weight: 400;
+  color: white;
+}
+
+.chatModal .inputContainer {
+  grid-template-columns: 75% 25%;
+}
+.chatModal .inputContainer button {
+  font-size: 18px;
+  font-weight: 700;
+  background-color: #0B5ED7;
+  color: white;
+  margin: 0 10px;
+  border-radius: 6px;
+}
+
+.showInput {
+  display: grid;
+}
+
+.hideInput {
+  display: none;
+}
+
+.chatModal .inputContainer input {
+  outline: none;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 18px;
+  padding: 0 8px;
+}
+
 @media ( min-width:800px) {
   .resetBtn,.goToHome {
     transform: rotate(0);
@@ -255,184 +438,20 @@
   }
 
   .gameBoxTTT{
-    width: 100%;
-    min-height: 100vh;
-    display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows:  50%  25% 25%;
-    padding: 18px;
+    grid-template-rows:  60%  20% 20%;
   }
+}
 
-  .gameBoxTTT > .gameBox {
-    position: relative;
-    min-width: 290px;
-    max-width: 490px;
-    min-height: 290px;
-    max-height: 490px;
-    aspect-ratio: 1;
-    margin-top: 32px;
-    display: grid;
-    grid-template-columns: repeat(3,1fr);
-    grid-template-rows: repeat(3,1fr);
-    border-radius: 12px;
-  }
-
-  .cellT {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-  }
-
-  .cell1, .cell4, .cell7 {
-    border-left:  2px solid rgba(88, 88, 88, 0.973);
-    border-right:  2px solid rgba(88, 88, 88, 0.973);
-  }
-
-  .cell3, .cell5, .cell4{
-    border-top:  2px solid rgba(88, 88, 88, 0.973);
-    border-bottom:  2px solid rgba(88, 88, 88, 0.973);
-  }
-
-  .cell0, .cell3 , .cell6 {
-    margin-left: 10px;
-  }
-
-  .cell2, .cell5 , .cell8 {
-    margin-right: 10px;
-  }
-
-  .cell0, .cell1 , .cell2 {
-    margin-top: 10px;
-  }
-
-  .cell8, .cell7 , .cell6 {
-    margin-bottom: 10px;
-  }
-
-  .gameBoxTTT > .gameBtns ,
-  .gameBoxTTT > .playerIndicator{
-      display: flex;
-      justify-content: center;
-      align-items: center;
+@media (min-width:720px) {
+  .gameBoxTTT{
+    grid-template-columns: 70%  30%;
+    grid-template-rows: 1fr  ;
   }
 
   .gameBoxTTT > .gameBtns {
-    align-items: flex-start;
-    justify-content: space-evenly;
-  }
-
-  .oneT {
-    animation: popIcon 2s infinite;
-  }
-
-  @keyframes popIcon {
-    0%{
-      transform: scale(1);
-    }
-    50%{
-      transform: scale(1.1);
-    }
-    100%{
-      transform: scale(1);
-    }
-  }
-
-  .chatModal {
     position: absolute;
-    padding: 20px;
-    display: grid;
-    grid-template-rows: 12% 78% 10%;
-    background-color: rgba(61, 60, 60, 0.267);
-    backdrop-filter: blur(0.06rem);
-    z-index: 50;
-    transition:all 300ms;
-  }
-  
-  .showChatModal {
-    bottom: 0;
-    right: 0;
-    width: 100%;
-    height: 50%;
-  }
-  
-  .hideChatModal {
-    bottom: 24px;
-    right: 24px;
-    width: 0;
-    height: 0;
-    opacity: 0;
-    pointer-events: none;
-    
-  }
-
-  .chatModal .chatHeader {
-    background-color: rgba(137, 135, 135, 0.382);
-    padding:6px;
-    color: white;
-    border-radius: 10px;
-  }
-
-  .chatModal .chatContainer{
-    overflow-y: scroll;
-    padding: 10px 4px;
-  }
-  .chatModal .chatContainer ul {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    transition: 300ms;
-  }
-  
-  .chatLeft{
-    align-self: flex-start;
-    background-color: #1b62cc;
-  }
-  
-  .chatRight {
-    background-color: #23d70b;
-    align-self: flex-end;
-  }
-    
-  .chatModal .chatContainer li{
-    transition: 300ms;
-    max-width: fit-content;
-    margin:  4px;
-    margin-left: -30px;
-    padding:1px 16px;
-    border-radius: 28px;
-    font-size: 19px;
-    font-weight: 400;
-    color: white;
-  }
-
-  .chatModal .inputContainer {
-    grid-template-columns: 75% 25%;
-  }
-  .chatModal .inputContainer button {
-    font-size: 18px;
-    font-weight: 700;
-    background-color: #0B5ED7;
-    color: white;
-    margin: 0 10px;
-    border-radius: 6px;
-  }
-
-  .showInput {
-    display: grid;
-  }
-
-  .hideInput {
-    display: none;
-  }
-
-  .chatModal .inputContainer input {
-    outline: none;
-    border: none;
-    border-radius: 6px;
-    font-weight: 500;
-    font-size: 18px;
-    padding: 0 8px;
+    top: 50px;
+    left: 74%;
   }
 }
