@@ -344,9 +344,9 @@
     display: grid;
     grid-template-rows: 12% 78% 10%;
     background-color: rgba(61, 60, 60, 0.267);
-    backdrop-filter: blur(0.01rem);
+    backdrop-filter: blur(0.06rem);
     z-index: 50;
-    transition: 300ms;
+    transition:all 300ms;
   }
   
   .showChatModal {
@@ -384,10 +384,10 @@
     justify-content: flex-end;
     transition: 300ms;
   }
-
+  
   .chatLeft{
     align-self: flex-start;
-    background-color: #0050c8;
+    background-color: #1b62cc;
   }
   
   .chatRight {
@@ -396,6 +396,7 @@
   }
     
   .chatModal .chatContainer li{
+    transition: 300ms;
     max-width: fit-content;
     margin:  4px;
     margin-left: -30px;
