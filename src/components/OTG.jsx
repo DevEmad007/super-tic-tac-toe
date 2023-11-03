@@ -3,10 +3,11 @@ import { useState,useEffect,useCallback } from 'react';
 import useSkipRender from '../hooks/useSkipRender';
 import { useGameContext } from '../hooks/useGameContext';
 import { getFirestore,doc,updateDoc } from "firebase/firestore";
-import { CircleOutlined,Close } from '@mui/icons-material';
+import { Chat,ChatBubbleOutlineOutlined,ChatOutlined,CircleOutlined,Close } from '@mui/icons-material';
 import InGameModal from './modals/InGameModal';
 import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
+import ChatModal from './modals/ChatModal';
 
 const OTG = () => {
     const screenWidth = screen.width;
@@ -15,6 +16,7 @@ const OTG = () => {
     const [ isHomeBtnClicked,setIsHomeBtnClicked ] = useState(false);
     const [ resetCell,setResetCell ] = useState(false);
     const [ cellID,setCellID ] = useState(null);
+    const [ isChatModal,setIsChatModal ] = useState(false);
     const navigate = useNavigate();
     const lines = [
         [ 0,1,2 ],
@@ -42,6 +44,7 @@ const OTG = () => {
         nxtPlayBox,
         roomID,
         roomData,
+        setIsOnlinePlaying,
     } = useGameContext();
 
     const compareAndMergeArrays = (array1,array2) => {
@@ -123,8 +126,23 @@ const OTG = () => {
         }
     };
 
+    const showChatModal = () => {
+        setIsChatModal(true);
+    };
+
+    const hideChatModal = () => {
+        setIsChatModal(false);
+    };
     return (
         <div className='gameBoxTTT' >
+            <ChatOutlined
+                onClick={showChatModal}
+                sx={{ position: 'absolute',right: '24px',bottom: '24px',fontSize: '34px' }}
+            />
+            <ChatModal
+                hideChatModal={hideChatModal}
+                show={isChatModal}
+            />
             <InGameModal
                 className='resetModal'
                 winner={winner}

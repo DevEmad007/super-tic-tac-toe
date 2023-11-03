@@ -22,16 +22,21 @@ function InGameModal({ isHomeBtnClicked,show,handleReset,handleClose,winner,isDr
                 </Modal.Header>
                 <Modal.Footer>
                     {winner === null ?
-                        (
-                            <>
-                                <Button variant="danger " onClick={handleReset}>
-                                    Yes
-                                </Button>
-                                <Button variant="success" onClick={handleClose}>
-                                    No
-                                </Button>
-                            </>
-                        )
+                        isDraw ?
+                            (<Button variant="secondary" onClick={handleReset}>
+                                Reset Game
+                            </Button>)
+                            :
+                            (
+                                <>
+                                    <Button variant="danger " onClick={handleReset}>
+                                        Yes
+                                    </Button>
+                                    <Button variant="success" onClick={handleClose}>
+                                        No
+                                    </Button>
+                                </>
+                            )
                         :
                         (<Button variant="secondary" onClick={handleReset}>
                             Reset Game
