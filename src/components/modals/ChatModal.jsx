@@ -1,9 +1,16 @@
 import { Close,CloseOutlined } from '@mui/icons-material';
 import { Button,Input,Box,Typography,Modal,ButtonBase } from '@mui/material';
 import React,{ useState } from 'react';
+import { useGameContext } from '../../hooks/useGameContext';
 
 const ChatModal = ({ show,hideChatModal }) => {
     const [ sentMessage,setSentMessage ] = useState('');
+    const {
+        player,
+        roomID,
+        roomData,
+        setIsOnlinePlaying,
+    } = useGameContext();
 
     const handleChange = (e) => {
         setSentMessage(e.target.value);
@@ -15,13 +22,12 @@ const ChatModal = ({ show,hideChatModal }) => {
 
     return (
         <div
-            style={{ backgroundColor: "rgba(0, 0, 0, 0.43)" }}
             className={`chatModal ${show ? 'showChatModal' : 'hideChatModal'}`}
 
         >
             <Close
                 onClick={hideChatModal}
-                sx={{ position: 'absolute',top: '20px',right: '20px',fontSize: '30px',color: 'red' }}
+                sx={{ position: 'absolute',top: '25px',right: '24px',fontSize: '30px',color: '' }}
             />
             <div className={` chatHeader ${show ? 'showInput' : 'hideInput'}`}>
                 <h2 style={{ color: 'gary' }}>Chat</h2>
