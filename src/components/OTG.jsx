@@ -18,6 +18,8 @@ const OTG = () => {
     const [ cellID,setCellID ] = useState(null);
     const [ isChatModal,setIsChatModal ] = useState(false);
     const navigate = useNavigate();
+    const [ showDot,setShowDot ] = useState(false);
+
     const lines = [
         [ 0,1,2 ],
         [ 3,4,5 ],
@@ -128,18 +130,23 @@ const OTG = () => {
 
     const showChatModal = () => {
         setIsChatModal(true);
+        setShowDot(false);
     };
 
     const hideChatModal = () => {
         setIsChatModal(false);
+        setShowDot(false);
     };
+
     return (
         <div className='gameBoxTTT' >
             <ChatOutlined
                 onClick={showChatModal}
                 sx={{ position: 'absolute',right: '24px',bottom: '24px',fontSize: '34px' }}
             />
+            <span className={showDot ? 'chatDotshow' : 'chatDotHide'} />
             <ChatModal
+                setShowDot={setShowDot}
                 hideChatModal={hideChatModal}
                 show={isChatModal}
             />

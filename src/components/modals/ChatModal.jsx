@@ -6,7 +6,7 @@ import { getFirestore,doc,setDoc,updateDoc,onSnapshot,onSnapshotsInSync,arrayUni
 import { getChatData } from '../../API/updateRoom';
 import useSkipRender from '../../hooks/useSkipRender';
 
-const ChatModal = ({ show,hideChatModal }) => {
+const ChatModal = ({ show,hideChatModal,setShowDot }) => {
     const db = getFirestore();
     const {
         player,
@@ -66,6 +66,10 @@ const ChatModal = ({ show,hideChatModal }) => {
         });
     },[ chatsData ]);
 
+    useSkipRender(() => {
+        setShowDot(true);
+    },chats.length);
+
     return (
         <div
             className={`chatModal ${show ? 'showChatModal' : 'hideChatModal'}`}
@@ -95,7 +99,7 @@ const ChatModal = ({ show,hideChatModal }) => {
                     name='input'
                     value={chatDetail.text}
                     onChange={(e) => handleChange(e)}
-                    placeholder='Send a Message'
+                    placeholder='Message...'
                     type="text"
                 />
                 <ButtonBase

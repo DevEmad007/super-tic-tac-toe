@@ -247,6 +247,33 @@
   animation: popIcon 2s infinite;
 }
 
+.chatDotshow{
+  display: inline-block;
+  height: 10px;
+  width: 10px;
+  border-radius:50%;
+  background-color: rgb(31, 31, 255);
+  position: absolute;
+  bottom: 50px;
+  right: 24px;
+  animation:popupDot 2s infinite ;
+}
+
+@keyframes popupDot {
+  0%,100%{
+    background-color: rgb(31, 31, 255);
+    transform: translate(1);
+  }
+  50%{
+    transform: translate(2);
+    background-color: rgb(232, 71, 17);
+  }
+}
+
+.chatDotHide{
+  display: none;
+}
+
 @keyframes popIcon {
   0%{
     transform: scale(1);
