@@ -1,11 +1,12 @@
-import React,{ useState } from 'react';
+import React,{ useEffect,useState } from 'react';
 import { Button,Container,Row,Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link,useLocation,useParams } from 'react-router-dom';
 import { useGameContext } from '../hooks/useGameContext';
 import RoomModal from '../components/modals/RoomModal';
 const Home = () => {
-    const { handleTwistMode,handleNormalMode } = useGameContext();
+    const { handleTwistMode,handleNormalMode,setRoomID,roomID } = useGameContext();
     const [ isRoomModalOpen,setIsRoomModalOpen ] = useState(false);
+    const location = useLocation();
 
     const handleOpenModal = () => {
         setIsRoomModalOpen(true);
@@ -14,6 +15,12 @@ const Home = () => {
     const handleCancel = () => {
         setIsRoomModalOpen(false);
     };
+
+    useEffect(() => {
+        if (location.pathname === '/') {
+            setRoomID(null);
+        }
+    },[ location.pathname ]);
 
     return (
         <>

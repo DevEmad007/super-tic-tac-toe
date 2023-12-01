@@ -376,6 +376,7 @@ export const GameContext = ({ children }) => {
         createRoom,
         joinRoom,
         roomID,
+        setRoomID,
         roomData,
         setRoomData,
         playersIn
